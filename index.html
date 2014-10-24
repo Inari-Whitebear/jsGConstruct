@@ -1,12 +1,88 @@
 <html>
 <head>
-<title>JS Gonstruct</title>
-<script src="phaser.js"></script>
-<script src="static/bundle.js"></script>
-<!--<script src="main.js"></script>-->
+	<title>JS Gonstruct</title>
+	<link href="Libs/jQueryUI/jquery-ui.css" rel="stylesheet">
+	<link href="Libs/jQueryUI/jMenu/jmenu.css" rel="stylesheet">
+	<style>
+		.ui-layout-center {
+			padding: 0px !important;
+		}
+		.ui-layout-north {
+			padding: 0px !important;
+			overflow: visible !important;
+			z-index: 5 !important;
+		}
+		.ui-layout-east {
+			padding: 0px !important;
+		}
+		body{font-size:14px;}
+		#level_tabs {
+			padding: 0px;
+			margin: 0px;
+			font-size:12px;
+		}
+	</style>
+
+	<script src="phaser.js"></script>
+	<script src="main.js"></script>
+	<!--<script src="main.js"></script>-->
 </head>
 <body>
-<div id="level_render"></div>
-<div id="tileset_render"></div>
+<div id="level_render" class="ui-layout-center" style="margin:0px; !important"></div>
+<div class="ui-layout-north">
+	<div>
+	    <ul id="main_menu">
+	        <li><a>File</a>
+	        	<ul>
+	        		<li><a>New</a></li>
+	        		<li id="menu_open"><a>Open</a></li>
+	        		<li><a>Save</a></li>
+	        		<li><a>Save As...</a></li>
+	        		<li><a>Close</a></li>
+	        		<li><a>Exit</a></li>
+	        	</ul>
+	        </li>
+	        <li><a>Edit</a></li>
+	    </ul>
+	</div>
+	<div id="level_tabs">
+		<ul style="margin-left: 0px;">
+			<li><a href="#fake-tab">unnamed</a></li>
+		</ul>
+		<div id="fake_tab" style="visibility:hidden; width: 0px; height: 0px; margin:0px; padding:0px;"></div>
+	</div>
+</div>
+<div class="ui-layout-south">South</div>
+<div class="ui-layout-east">
+	<div id="side_tabs">
+		<ul>
+			<li><a href="#Tiles">Tiles</a></li>
+			<li><a href="#NPCs">NPCs</a></li>
+			<li><a href="#Predef">Predefined</a></li>
+		</ul>
+		<div id="Tiles"><div id="tile_render"></div></div>
+		<div id="NPCs"></div>
+		<div id="Predef"></div>
+	</div>
+</div>
+<div id="dialog-jqwidgets">
+	<p>Built using JQWidgets (not free for commercial-use).<br />
+	<a href="https://www.jqwidgets.com/license/">https://www.jqwidgets.com/license/</a>
+</div>
+<!--
+	<div style="height: 100vh; overflow:hidden; margin:0px; spacing:0px;">
+		<div style="height:30px;"><input type="button" id="open_file_test" size="40"></input></div>
+	
+		<div id="tileset_render"></div>
+		<div id="tabs" style="margin: 0px; overflow:scroll; height: calc(100vh - 30px)">
+		  <ul>
+		    <li><a href="#A">A</a></li>
+		    <li><a href="#A">B</a></li>
+		    <li><a href="#A">C</a></li>
+		  </ul>
+		  <div id="level_render"></div>
+		  <div style="height: 100%; overflow:scroll;" id="A"></div>
+		</div>
+	</div>-->
 </body>
 </html>
