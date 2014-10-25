@@ -109,6 +109,7 @@ g.States.Main = {
     if(this.tileSelection.dirty) {
       this.tileSelection.dirty = false;
 
+      this.subCanvasOverlay.context.strokeStyle = 
       this.subCanvasOverlay.clear();
       this.tileSelection.calcRect();
       var drawW = this.tileSelection.rect.w * 16;
@@ -125,7 +126,13 @@ g.States.Main = {
         drawOffY = -2;
       }
 
-      this.subCanvasOverlay.rect(this.tileSelection.rect.x * 16 + drawOffX, this.tileSelection.rect.y * 16 + drawOffY, drawW, drawH, "#FF0000");
+      this.subCanvasOverlay.context.beginPath();
+      this.subCanvasOverlay.context.lineWidth = 2;
+      this.subCanvasOverlay.context.strokeStyle = "rgba(255,0,0,1)";
+      this.subCanvasOverlay.context.fillStyle = "rgba(255,0,0,0.1)";
+      this.subCanvasOverlay.context.rect(this.tileSelection.rect.x * 16 + drawOffX, this.tileSelection.rect.y * 16 + drawOffY, drawW, drawH);
+      this.subCanvasOverlay.context.fill();
+      this.subCanvasOverlay.context.stroke();
     }
 
     this.subStage.preUpdate();
