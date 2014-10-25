@@ -109,7 +109,6 @@ g.States.Main = {
     if(this.tileSelection.dirty) {
       this.tileSelection.dirty = false;
 
-      this.subCanvasOverlay.context.strokeStyle = 
       this.subCanvasOverlay.clear();
       this.tileSelection.calcRect();
       var drawW = this.tileSelection.rect.w * 16;
