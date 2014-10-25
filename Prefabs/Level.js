@@ -46,6 +46,11 @@ Level.prototype.hide = function() {
 };
 
 Level.prototype.create = function() {
+  if(!this.dataLoaded) {
+    this.data = g.NWTools.createBlankNW();
+    this.dataLoaded = true;
+  }
+
   this.loaded = true;
 
   for (var i = 0, l = this.data.layers.length; i < l; i++) {

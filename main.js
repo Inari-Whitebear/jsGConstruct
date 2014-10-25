@@ -46,12 +46,16 @@ $("document").ready(function () {
   $("#menu_open").click(function() {
     var files = ipc.sendSync("openFile");
     if(files != null) {
-      g.Manager.open(files[0]);
+      g.Manager.openLevel(files[0]);
     }
   });
 
   $("#menu_exit").click(function() {
     ipc.sendSync("close");
+  });
+
+  $("#menu_new").click(function() {
+    g.Manager.newLevel();
   });
 
   var side_tabs = $("#side_tabs").scrollTabs({

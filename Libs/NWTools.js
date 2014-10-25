@@ -4,9 +4,15 @@ var g = window.g;
 
 g.NWTools = {
   parseNWDataString: function(nwString) {
-    var data = {};
-    data.layers = [];
+    var data = this.createBlankNW();
 
+    return data;
+  },
+
+  createBlankNW: function() {
+    var data = {};
+
+    data.layers = [];
     data.layers.push({});
 
     return data;
