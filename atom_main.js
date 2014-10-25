@@ -25,6 +25,10 @@ ipc.on("openFile", function(event, arg) {
   event.returnValue = result;
 });
 
+ipc.on("close", function() {
+  mainWindow.close();
+});
+
 // This method will be called when atom-shell has done everything
 // initialization and ready for creating browser windows.
 app.on("ready", function() {

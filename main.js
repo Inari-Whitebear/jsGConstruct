@@ -7,6 +7,8 @@ window.$ = window.jQuery = require("./Libs/jQueryUI/external/jquery/jquery.js");
 window.jQueryUI = require("./Libs/jQueryUI/jquery-ui.js");
 require("./Libs/jQueryUI/layout/jquery.layout.js");
 require("./Libs/jQueryUI/jMenu/jMenu.jquery.js");
+require("./Libs/jQuery-ScrollTabs/js/jquery.scrolltabs.js");
+require("./Libs/jQuery-ScrollTabs/js/jquery.mousewheel.js");
 
 var g = window.g;
 
@@ -38,7 +40,7 @@ $("document").ready(function () {
     }
   });
 
-  var tabs = $("#level_tabs").tabs();
+  var tabs = $("#level_tabs").scrollTabs();
 
   var menu = $("#main_menu").jMenu();
   $("#menu_open").click(function() {
@@ -48,7 +50,24 @@ $("document").ready(function () {
     }
   });
 
-  var side_tabs = $("#side_tabs").tabs();
+  $("#menu_exit").click(function() {
+    ipc.sendSync("close");
+  });
+
+  var side_tabs = $("#side_tabs").scrollTabs({
+    click_callback: function(e) {
+      switch(e.target.innerText) {
+        case "Tiles":
+          //$("#tile_render").show();
+        break;
+        default:
+          //$("#tile_render").hide();
+        break;
+      }
+    }
+  });
+
+  $("#side_tabs_tiles").click();
 });
 
 //layout.options.east.resizable = true;

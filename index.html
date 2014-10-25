@@ -3,6 +3,7 @@
 	<title>JS Gonstruct</title>
 	<link href="Libs/jQueryUI/jquery-ui.css" rel="stylesheet">
 	<link href="Libs/jQueryUI/jMenu/jmenu.css" rel="stylesheet">
+	<link href="Libs/jQuery-ScrollTabs/css/scrolltabs.css" rel="stylesheet">
 	<style>
 		.ui-layout-center {
 			padding: 0px !important;
@@ -16,10 +17,9 @@
 			padding: 0px !important;
 		}
 		body{font-size:14px;}
-		#level_tabs {
+		#side_tabs, #level_tabs {
 			padding: 0px;
-			margin: 0px;
-			font-size:12px;
+			background-color:#dadada;
 		}
 	</style>
 
@@ -30,7 +30,7 @@
 <body>
 <div id="level_render" class="ui-layout-center" style="margin:0px; !important"></div>
 <div class="ui-layout-north">
-	<div>
+	<div style="background-color:#e3e3e3;">
 	    <ul id="main_menu">
 	        <li><a>File</a>
 	        	<ul>
@@ -39,50 +39,61 @@
 	        		<li><a>Save</a></li>
 	        		<li><a>Save As...</a></li>
 	        		<li><a>Close</a></li>
-	        		<li><a>Exit</a></li>
+	        		<li id="menu_exit"><a>Exit</a></li>
 	        	</ul>
 	        </li>
-	        <li><a>Edit</a></li>
+	        <li><a>Edit</a>
+	        	<ul>
+	        		<li><a>Undo</a></li>
+	        		<li><a>Redo</a></li>
+	        		<li><a>Cut</a></li>
+	        		<li><a>Copy</a></li>
+	        		<li><a>Paste</a></li>
+	        		<li><a>Delete</a></li>
+	        	</ul>
+	        </li>
+	        <li><a>Level</a>
+	        	<ul>
+	        		<li><a>Create Link</a></li>
+	        		<li><a>Links</a></li>
+	        		<li><a>Signs</a></li>
+	        		<li><a>NPCs</a></li>
+	        		<li><a>Tilesets</a></li>
+	        		<li><a>Execute</a></li>
+	        		<li><a>Screenshot</a></li>
+	        	</ul>
+	        </li>
+	        <li><a>Help</a>
+	        	<ul>
+	        		<li><a>About</a></li>
+	        	</ul>
+	        </li>
 	    </ul>
 	</div>
-	<div id="level_tabs">
-		<ul style="margin-left: 0px;">
-			<li><a href="#fake-tab">unnamed</a></li>
-		</ul>
-		<div id="fake_tab" style="visibility:hidden; width: 0px; height: 0px; margin:0px; padding:0px;"></div>
+	<div id="level_tabs" class="scroll_tabs_theme_smooth">
+		<span>unnamed</span>
+		<!--<div id="fake_tab" style="visibility:hidden; width: 0px; height: 0px; margin:0px; padding:0px;"></div>-->
 	</div>
 </div>
 <div class="ui-layout-south">South</div>
-<div class="ui-layout-east">
-	<div id="side_tabs">
-		<ul>
+<div class="ui-layout-east" style="overflow:hidden;">
+	<div id="side_tabs" class="scroll_tabs_theme_smooth">
+		<span id="side_tabs_tiles">Tiles</span>
+		<span>NPCs</span>
+		<span>Predefined</span>
+		<!--<ul>
+
 			<li><a href="#Tiles">Tiles</a></li>
 			<li><a href="#NPCs">NPCs</a></li>
 			<li><a href="#Predef">Predefined</a></li>
 		</ul>
 		<div id="Tiles"><div id="tile_render"></div></div>
 		<div id="NPCs"></div>
-		<div id="Predef"></div>
+		<div id="Predef"></div>-->
+	</div>
+	<div style="overflow:scroll;">
+	<div style="width: 2048px; height:512px;" id="tile_render"></div>
 	</div>
 </div>
-<div id="dialog-jqwidgets">
-	<p>Built using JQWidgets (not free for commercial-use).<br />
-	<a href="https://www.jqwidgets.com/license/">https://www.jqwidgets.com/license/</a>
-</div>
-<!--
-	<div style="height: 100vh; overflow:hidden; margin:0px; spacing:0px;">
-		<div style="height:30px;"><input type="button" id="open_file_test" size="40"></input></div>
-	
-		<div id="tileset_render"></div>
-		<div id="tabs" style="margin: 0px; overflow:scroll; height: calc(100vh - 30px)">
-		  <ul>
-		    <li><a href="#A">A</a></li>
-		    <li><a href="#A">B</a></li>
-		    <li><a href="#A">C</a></li>
-		  </ul>
-		  <div id="level_render"></div>
-		  <div style="height: 100%; overflow:scroll;" id="A"></div>
-		</div>
-	</div>-->
 </body>
 </html>
