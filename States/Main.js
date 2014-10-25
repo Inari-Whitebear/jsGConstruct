@@ -29,69 +29,64 @@ g.States.Main = {
     var subCanvasOverlayImage = new Phaser.Image(this.game, 0, 0, this.subCanvasOverlay);
     this.subWorld.add(subCanvasOverlayImage);
 
-    this.selectedTileInfo = [];
-
     var canvas = this.subCanvas;
     var downCallback = this.subCanvasMouseDown;
     var upCallback = this.subCanvasMouseUp;
     var moveCallback = this.subCanvasMouseMove;
     var self = this;
     this.subCanvasDragging = false;
-    this.subCanvasDragInfo = [0, 0, 0, 0];
-    this.subCanvas.addEventListener("mousedown",function(event) {
+
+    this.tileSelection = {};
+    this.tileSelection.rawRect = { x: 0, y: 0, w: 0, h: 0 };
+    this.tileSelection.rect = { x: 0, y: 0, w: 0, h: 0 };
+    this.tileSelection.dirty = false;
+
+    this.tileSelection.calcRect = function() {
+      if(this.rawRect.w < 0) {
+        this.rect.x = this.rawRect.x + this.rawRect.w;
+      } else {
+        this.rect.x = this.rawRect.x;
+      }
+
+      if(this.rawRect.h < 0) {
+        this.rect.y = this.rawRect.y + this.rawRect.h;
+      } else {
+        this.rect.y = this.rawRect.y;
+      }
+
+      this.rect.w = Math.abs(this.rawRect.w);
+      this.rect.h = Math.abs(this.rawRect.h);
+    };
+
+    var callbacks = { "mousedown": downCallback, "mouseup": upCallback, "mousemove": moveCallback };
+    var mousePosHelper = function(event) {
       var offset = $(canvas).offset();
       var xClick = event.clientX - offset.left;
       var yClick = event.clientY - offset.top;
-      downCallback.call(self,xClick,yClick);
-    });
-    this.subCanvas.addEventListener("mouseup",function(event) {
-      var offset = $(canvas).offset();
-      var xClick = event.clientX - offset.left;
-      var yClick = event.clientY - offset.top;
-      upCallback.call(self,xClick,yClick);
-    });
-    this.subCanvas.addEventListener("mousemove", function(event) {
-      var offset = $(canvas).offset();
-      var xClick = event.clientX - offset.left;
-      var yClick = event.clientY - offset.top;
-      moveCallback.call(self,xClick,yClick);
-    });
+      callbacks[event.type].call(self,xClick,yClick);
+    };
+
+    this.subCanvas.addEventListener("mousedown", mousePosHelper);
+    this.subCanvas.addEventListener("mouseup", mousePosHelper);
+    this.subCanvas.addEventListener("mousemove", mousePosHelper);
   },
 
   subCanvasMouseDown: function(x, y) {
     this.subCanvasDragging = true;
-    var tileX = Math.floor(x / 16);
-    var tileY = Math.floor(y / 16);
+    var tileX = Math.floor((x + 4) / 16);
+    var tileY = Math.floor((y + 4) / 16);
 
-    this.subCanvasOverlay.clear();
-    this.subCanvasOverlay.rect(tileX * 16 - 2, tileY * 16 - 2, 4, 4, "#FF0000");
-    this.subCanvasDragInfo = [ tileX, tileY, 0, 0 ];
+    this.tileSelection.rawRect.x = tileX;
+    this.tileSelection.rawRect.y = tileY;
+    this.tileSelection.rawRect.w = 0;
+    this.tileSelection.rawRect.h = 0;
+    this.tileSelection.dirty = true;
   },
 
   subCanvasMouseUp: function(x, y) {
     if (this.subCanvasDragging) {
       this.subCanvasDragging = false;
-
-      var start = [0, 0];
-      var size = [0, 0];
-      if (this.subCanvasDragInfo[2] < 0) {
-        start[0] = this.subCanvasDragInfo[0] + this.subCanvasDragInfo[2];
-        size[0] = Math.abs(this.subCanvasDragInfo[2]);
-      } else {
-        start[0] = this.subCanvasDragInfo[0];
-        size[0] = this.subCanvasDragInfo[2];
-      }
-
-      if (this.subCanvasDragInfo[3] < 0) {
-        start[1] = this.subCanvasDragInfo[3] + this.subCanvasDragInfo[1];
-        size[1] = Math.abs(this.subCanvasDragInfo[3]);
-      } else {
-        start[1] = this.subCanvasDragInfo[1];
-        size[1] = this.subCanvasDragInfo[3];
-      }
-
-      this.selectedTileInfo = [start[0], start[1], size[0], size[1]];
-      this.subCanvasDragInfo = [0, 0, 0, 0];
+      this.tileSelection.calcRect();
     }
   },
 
@@ -100,36 +95,39 @@ g.States.Main = {
     var tileX = Math.floor(x / 16);
     var tileY = Math.floor(y / 16);
 
-    this.subCanvasDragInfo[2] = tileX - this.subCanvasDragInfo[0];
-    this.subCanvasDragInfo[3] = tileY - this.subCanvasDragInfo[1];
+    var sizeW = tileX - this.tileSelection.rawRect.x;
+    var sizeH = tileY - this.tileSelection.rawRect.y;
 
-    this.subCanvasOverlay.clear();
-    var start = [0, 0];
-    var size = [0, 0];
-    if (this.subCanvasDragInfo[2] < 0) {
-      start[0] = this.subCanvasDragInfo[0] + this.subCanvasDragInfo[2];
-      size[0] = Math.abs(this.subCanvasDragInfo[2]);
-    } else {
-      start[0] = this.subCanvasDragInfo[0];
-      size[0] = this.subCanvasDragInfo[2];
-    }
-
-    if (this.subCanvasDragInfo[3] < 0) {
-      start[1] = this.subCanvasDragInfo[3] + this.subCanvasDragInfo[1];
-      size[1] = Math.abs(this.subCanvasDragInfo[3]);
-    } else {
-      start[1] = this.subCanvasDragInfo[1];
-      size[1] = this.subCanvasDragInfo[3];
-    }
-
-    if(size[0] === 0 && size[1] === 0) {
-      this.subCanvasOverlay.rect(start[0] * 16 - 2, start[1] * 16 - 2, 4, 4, "#FF0000");
-    } else {
-      this.subCanvasOverlay.rect(start[0] * 16, start[1] * 16, size[0] * 16, size[1] * 16, "#FF0000");
+    if(this.tileSelection.rawRect.w !== sizeW || this.tileSelection.rawRect.h !== sizeH) {
+      this.tileSelection.dirty = true;
+      this.tileSelection.rawRect.w = sizeW;
+      this.tileSelection.rawRect.h = sizeH;
     }
   },
 
   update: function() {
+    if(this.tileSelection.dirty) {
+      this.tileSelection.dirty = false;
+
+      this.subCanvasOverlay.clear();
+      this.tileSelection.calcRect();
+      var drawW = this.tileSelection.rect.w * 16;
+      var drawH = this.tileSelection.rect.h * 16;
+      var drawOffX = 0;
+      var drawOffY = 0;
+
+      if(drawW === 0) {
+        drawW = 4;
+        drawOffX = -2;
+      }
+      if(drawH === 0) {
+        drawH = 4;
+        drawOffY = -2;
+      }
+
+      this.subCanvasOverlay.rect(this.tileSelection.rect.x * 16 + drawOffX, this.tileSelection.rect.y * 16 + drawOffY, drawW, drawH, "#FF0000");
+    }
+
     this.subStage.preUpdate();
     this.subStage.update();
     this.subStage.postUpdate();
