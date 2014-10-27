@@ -15,6 +15,8 @@ Manager.prototype.newLevel = function() {
 
   level.create();
   level.show();
+
+  g.States.Main.openLevel = level;
 };
 
 Manager.prototype.openLevel = function(path) {

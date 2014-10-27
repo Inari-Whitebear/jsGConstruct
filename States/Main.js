@@ -31,6 +31,7 @@ g.States.Main = {
 
     this.tileset = new Phaser.Sprite(this.game, 0, 0, "pics1", "");
     this.subInput = new Phaser.InputHandler(this.tileset);
+    this.openLevel = null;
     this.subWorld.add(this.tileset);
 
     this.subCanvasOverlay = new Phaser.BitmapData(this.game, "subCanvasSelection", 2048, 512);
@@ -45,6 +46,7 @@ g.States.Main = {
     this.subCanvasDragging = false;
 
     this.levelMode = "none";
+    this.activeLayer = 1;
     this.levelTileCropRect = new Phaser.Rectangle(0, 0, 0, 0);
 
     this.tileSelection = {};
@@ -94,6 +96,27 @@ g.States.Main = {
     this.subCanvas.addEventListener("mouseup", mousePosHelper);
     this.subCanvas.addEventListener("mousemove", mousePosHelper);
     this.game.stage.checkOffsetInterval = 100;
+
+    this.game.input.onDown.add(this.levelClick, this);
+  },
+
+  levelClick: function() {
+    var point = Phaser.Canvas.getOffset(this.game.canvas);
+    var pointerTileX = Math.round((this.game.input.mousePointer.pageX - point.x) / 16);
+    var pointerTileY = Math.round((this.game.input.mousePointer.pageY - point.y) / 16);
+
+    this.openLevel.placeTiles(pointerTileX - this.tileSelection.rect.w, pointerTileY - this.tileSelection.rect.h, this.getSelectedTileArray(), this.activeLayer);
+  },
+
+  getSelectedTileArray: function() {
+    var tileArray = [];
+    for(var tX = 0; tX < this.tileSelection.rect.w; tX++) {
+      tileArray[tX] = [];
+      for(var tY = 0; tY < this.tileSelection.rect.h; tY++) {
+        tileArray[tX][tY] = tX + this.tileSelection.rect.x + (tY + this.tileSelection.rect.y) * 128;
+      }
+    }
+    return tileArray;
   },
 
   subCanvasMouseDown: function(x, y) {
