@@ -12,6 +12,7 @@ TODO:
 
 g.States.Main = {
   create: function() {
+    // Setup of the tileset display, renderer, etc
     this.subStage = new Phaser.Stage(this.game);
     this.subCanvas = Phaser.Canvas.create(2048, 512, "tile_render");
     this.subRenderer = new PIXI.CanvasRenderer(2048, 512, this.subCanvas, false);
@@ -21,61 +22,28 @@ g.States.Main = {
 
     this.subWorld = new Phaser.Group(this.game, null);
     this.subWorld.camera = new Phaser.Camera(this.game, 0, 0, 0, 2048, 512);
-
     this.subWorld.camera.displayObject = this.subWorld;
 
+    this.tileset = new Phaser.Sprite(this.game, 0, 0, "pics1", "");
+
     this.subStage.addChild(this.subWorld);
+    this.subWorld.add(this.tileset);
 
     Phaser.Canvas.addToDOM(this.subCanvas, "tile_render");
     Phaser.Canvas.setTouchAction(this.subCanvas);
 
-    this.tileset = new Phaser.Sprite(this.game, 0, 0, "pics1", "");
     this.subInput = new Phaser.InputHandler(this.tileset);
-    this.openLevel = null;
-    this.subWorld.add(this.tileset);
 
     this.subCanvasOverlay = new Phaser.BitmapData(this.game, "subCanvasSelection", 2048, 512);
     var subCanvasOverlayImage = new Phaser.Image(this.game, 0, 0, this.subCanvasOverlay);
     this.subWorld.add(subCanvasOverlayImage);
 
+    // Setting up the events for the canvas
     var canvas = this.subCanvas;
     var downCallback = this.subCanvasMouseDown;
     var upCallback = this.subCanvasMouseUp;
     var moveCallback = this.subCanvasMouseMove;
     var self = this;
-    this.subCanvasDragging = false;
-
-    this.levelMode = "none";
-    this.activeLayer = 1;
-    this.levelTileCropRect = new Phaser.Rectangle(0, 0, 0, 0);
-
-    this.tileSelection = {};
-    this.tileSelection.rawRect = { x: 0, y: 0, w: 0, h: 0 };
-    this.tileSelection.rect = { x: 0, y: 0, w: 0, h: 0 };
-    this.tileSelection.dirty = false;
-    
-
-    this.tileSelection.calcRect = function() {
-      if (this.rawRect.w < 0) {
-        this.rect.x = this.rawRect.x + this.rawRect.w;
-      } else {
-        this.rect.x = this.rawRect.x;
-      }
-
-      if (this.rawRect.h < 0) {
-        this.rect.y = this.rawRect.y + this.rawRect.h;
-      } else {
-        this.rect.y = this.rawRect.y;
-      }
-
-      this.rect.w = Math.abs(this.rawRect.w);
-      this.rect.h = Math.abs(this.rawRect.h);
-    };
-
-    this.levelTilePlacing = new Phaser.Sprite(this.game, 0, 0, "pics1");
-    this.levelTilePlacing.crop(this.levelTileCropRect);
-    this.game.add.existing(this.levelTilePlacing);
-
     var callbacks = { "mousedown": downCallback, "mouseup": upCallback, "mousemove": moveCallback };
     var mousePosHelper = function(event) {
       var offset = $(canvas).offset();
@@ -83,24 +51,30 @@ g.States.Main = {
       var yClick = event.clientY - offset.top;
       callbacks[event.type].call(self,xClick,yClick);
     };
-
-    /*this.game.canvas.addEventListener("mouseover", function() {
-      self.levelTilePlacing.visible = true;
-    });
-
-    this.game.canvas.addEventListener("mouseout", function() {
-      self.levelTilePlacing.visible = false;
-    });*/
-
     this.subCanvas.addEventListener("mousedown", mousePosHelper);
     this.subCanvas.addEventListener("mouseup", mousePosHelper);
     this.subCanvas.addEventListener("mousemove", mousePosHelper);
-    this.game.stage.checkOffsetInterval = 100;
+
+    // Data for level editing
+    this.activeLayer = 1;
+    this.tileSelection = {
+      rect: new g.Prefabs.NormRect(),
+      cropRect: new Phaser.Rectangle(0, 0, 0, 0),
+      mode: "none",
+      dirty: false,
+      dragging: false
+    };
+    this.openLevel = null;
+
+    this.levelTilePlacing = new Phaser.Sprite(this.game, 0, 0, "pics1");
+    this.levelTilePlacing.crop(this.tileSelection.cropRect);
+    this.game.add.existing(this.levelTilePlacing);
 
     this.game.input.onDown.add(this.levelClick, this);
   },
 
   levelClick: function() {
+    if (this.openLevel == null) { return; }
     var point = Phaser.Canvas.getOffset(this.game.canvas);
     var pointerTileX = Math.round((this.game.input.mousePointer.pageX - point.x) / 16);
     var pointerTileY = Math.round((this.game.input.mousePointer.pageY - point.y) / 16);
@@ -110,9 +84,9 @@ g.States.Main = {
 
   getSelectedTileArray: function() {
     var tileArray = [];
-    for(var tX = 0; tX < this.tileSelection.rect.w; tX++) {
+    for (var tX = 0; tX < this.tileSelection.rect.w; tX++) {
       tileArray[tX] = [];
-      for(var tY = 0; tY < this.tileSelection.rect.h; tY++) {
+      for (var tY = 0; tY < this.tileSelection.rect.h; tY++) {
         tileArray[tX][tY] = tX + this.tileSelection.rect.x + (tY + this.tileSelection.rect.y) * 128;
       }
     }
@@ -120,43 +94,44 @@ g.States.Main = {
   },
 
   subCanvasMouseDown: function(x, y) {
-    this.subCanvasDragging = true;
+    this.tileSelection.dragging = true;
+
     var tileX = Math.floor((x + 4) / 16);
     var tileY = Math.floor((y + 4) / 16);
 
-    this.tileSelection.rawRect.x = tileX;
-    this.tileSelection.rawRect.y = tileY;
-    this.tileSelection.rawRect.w = 0;
-    this.tileSelection.rawRect.h = 0;
+    this.tileSelection.rect.rawRect.x = tileX;
+    this.tileSelection.rect.rawRect.y = tileY;
+    this.tileSelection.rect.rawRect.w = 0;
+    this.tileSelection.rect.rawRect.h = 0;
     this.tileSelection.dirty = true;
   },
 
   subCanvasMouseUp: function(x, y) {
-    if (this.subCanvasDragging) {
-      this.subCanvasDragging = false;
-      this.tileSelection.calcRect();
+    if (this.tileSelection.dragging) {
+      this.tileSelection.dragging = false;
+      this.tileSelection.rect.calcRect();
 
-      this.levelTileCropRect.x = this.tileSelection.rect.x * 16;
-      this.levelTileCropRect.y = this.tileSelection.rect.y * 16;
-      this.levelTileCropRect.width = this.tileSelection.rect.w * 16;
-      this.levelTileCropRect.height = this.tileSelection.rect.h * 16;
+      this.tileSelection.cropRect.x = this.tileSelection.rect.x * 16;
+      this.tileSelection.cropRect.y = this.tileSelection.rect.y * 16;
+      this.tileSelection.cropRect.width = this.tileSelection.rect.w * 16;
+      this.tileSelection.cropRect.height = this.tileSelection.rect.h * 16;
       this.levelTilePlacing.updateCrop();
-      this.levelMode = "placing";
+      this.tileSelection.mode = "placing";
     }
   },
 
   subCanvasMouseMove: function(x, y) {
-    if (!this.subCanvasDragging) { return; }
+    if (!this.tileSelection.dragging) { return; }
     var tileX = Math.floor(x / 16);
     var tileY = Math.floor(y / 16);
 
-    var sizeW = tileX - this.tileSelection.rawRect.x;
-    var sizeH = tileY - this.tileSelection.rawRect.y;
+    var sizeW = tileX - this.tileSelection.rect.rawRect.x;
+    var sizeH = tileY - this.tileSelection.rect.rawRect.y;
 
-    if (this.tileSelection.rawRect.w !== sizeW || this.tileSelection.rawRect.h !== sizeH) {
+    if (this.tileSelection.rect.rawRect.w !== sizeW || this.tileSelection.rect.rawRect.h !== sizeH) {
       this.tileSelection.dirty = true;
-      this.tileSelection.rawRect.w = sizeW;
-      this.tileSelection.rawRect.h = sizeH;
+      this.tileSelection.rect.rawRect.w = sizeW;
+      this.tileSelection.rect.rawRect.h = sizeH;
     }
   },
 
@@ -165,12 +140,12 @@ g.States.Main = {
       this.tileSelection.dirty = false;
 
       this.subCanvasOverlay.clear();
-      this.tileSelection.calcRect();
+      this.tileSelection.rect.calcRect();
+
       var drawW = this.tileSelection.rect.w * 16;
       var drawH = this.tileSelection.rect.h * 16;
       var drawOffX = 0;
       var drawOffY = 0;
-
       if (drawW === 0) {
         drawW = 4;
         drawOffX = -2;
@@ -189,22 +164,17 @@ g.States.Main = {
       this.subCanvasOverlay.context.stroke();
     }
 
-    if (this.levelMode === "placing") {
+    if (this.tileSelection.mode === "placing") {
       if (this.levelTilePlacing.visible) {
 
         var point = Phaser.Canvas.getOffset(this.game.canvas);
         var pointerTileX = Math.round((this.game.input.mousePointer.pageX - point.x) / 16);
         var pointerTileY = Math.round((this.game.input.mousePointer.pageY - point.y) / 16);
 
-        this.levelTilePlacing.x = pointerTileX * 16 - this.levelTileCropRect.width;
-        this.levelTilePlacing.y = pointerTileY * 16 - this.levelTileCropRect.height;
+        this.levelTilePlacing.x = pointerTileX * 16 - this.tileSelection.cropRect.width;
+        this.levelTilePlacing.y = pointerTileY * 16 - this.tileSelection.cropRect.height;
         this.levelTilePlacing.bringToTop();
-        //this.levelTilePlacing.visible = true;
-      } else {
-        //this.levelTilePlacing.visible = false;
       }
-    } else {
-      //this.levelTilePlacing.visible = false;
     }
 
     this.subStage.preUpdate();
