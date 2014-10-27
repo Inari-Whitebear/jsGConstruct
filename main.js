@@ -20,9 +20,12 @@ g.tileHeight = 16;
 var game = new Phaser.Game(g.levelWidth * g.tileWidth, g.levelHeight * g.tileHeight, Phaser.CANVAS, "level_render");
 var layout;
 var ipc = require("ipc");
+//var tabs;
 
 $("document").ready(function () {
-  var tabs = $("#level_tabs").scrollTabs();
+  g.Manager.tabs = $("#level_tabs").scrollTabs({
+    click_callback: g.Manager.tabClicked
+  });
 
   var menu = $("#main_menu").jMenu();
   $("#menu_open").click(function() {
@@ -77,10 +80,6 @@ $("document").ready(function () {
     }
   });
 });
-
-//layout.options.east.resizable = true;
-
-
 
 require("./States/load.js")(game);
 require("./Prefabs/load.js");

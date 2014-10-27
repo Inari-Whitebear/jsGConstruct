@@ -73,6 +73,15 @@ g.States.Main = {
     this.game.input.onDown.add(this.levelClick, this);
   },
 
+  setOpenLevel: function(level) {
+    if(this.openLevel != null) {
+      this.openLevel.hide();
+    }
+
+    this.openLevel = level;
+    this.openLevel.show();
+  },
+
   levelClick: function() {
     if (this.openLevel == null) { return; }
     var point = Phaser.Canvas.getOffset(this.game.canvas);
