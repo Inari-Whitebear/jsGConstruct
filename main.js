@@ -58,6 +58,10 @@ $("document").ready(function () {
     g.Manager.newLevel();
   });
 
+  $("#menu_about").click(function() {
+    $("#about_dialog").dialog({});
+  });
+
   var side_tabs = $("#side_tabs").scrollTabs({
     click_callback: function(e) {
       switch(e.target.innerText) {
