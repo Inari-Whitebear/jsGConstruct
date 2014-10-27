@@ -23,15 +23,15 @@ var ipc = require("ipc");
 //var tabs;
 
 $("document").ready(function () {
-  g.Manager.tabs = $("#level_tabs").scrollTabs({
-    click_callback: g.Manager.tabClicked
+  g.manager.tabs = $("#level_tabs").scrollTabs({
+    click_callback: g.manager.tabClicked
   });
 
   var menu = $("#main_menu").jMenu();
   $("#menu_open").click(function() {
     var files = ipc.sendSync("openFile");
     if(files != null) {
-      g.Manager.openLevel(files[0]);
+      g.manager.openLevel(files[0]);
     }
   });
 
@@ -40,7 +40,11 @@ $("document").ready(function () {
   });
 
   $("#menu_new").click(function() {
-    g.Manager.newLevel();
+    g.manager.newLevel();
+  });
+
+  $("#menu_save").click(function() {
+    g.States.Main.saveLevel();
   });
 
   $("#menu_about").click(function() {
@@ -85,6 +89,7 @@ require("./States/load.js")(game);
 require("./Prefabs/load.js");
 require("./Libs/NWTools.js");
 
-g.Manager = new g.Prefabs.Manager(game);
+g.manager = new g.Prefabs.Manager(game);
+g.game = game;
 
 game.state.start("Startup");

@@ -18,6 +18,7 @@ function Level(game, levelName, data, width, height) {
   this.loaded = false;
   this.dataLoaded = false;
   this.tileMap = new Phaser.Tilemap(game, null, g.tileWidth, g.tileHeight, this.width, this.height);
+  this.unsaved = false;
 
   this.tileMap.setPreventRecalculate(true);
 
@@ -32,7 +33,7 @@ Level.prototype.loadFrom = function(dataString) {
 };
 
 Level.prototype.save = function() {
-
+  this.unsaved = false;
 };
 
 Level.prototype.show = function() {
@@ -46,6 +47,8 @@ Level.prototype.placeTiles = function(x, y, tileArray, layer) {
       this.tileMap.putTile(tileArray[tX][tY], tX + x, tY + y, layer);
     }
   }
+  this.unsaved = true;
+  g.manager.updateTab(this);
 };
 
 Level.prototype.hide = function() {

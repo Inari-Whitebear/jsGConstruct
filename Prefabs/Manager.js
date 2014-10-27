@@ -24,7 +24,7 @@ Manager.prototype.newLevel = function() {
 };
 
 Manager.prototype.tabClicked = function(event) {
-  g.Manager.setSelectedTab($(event.target).attr("tabid"));
+  g.manager.setSelectedTab($(event.target).attr("tabid"));
 };
 
 Manager.prototype.setSelectedTab = function(tabid) {
@@ -35,6 +35,16 @@ Manager.prototype.setSelectedTab = function(tabid) {
     }
   }
 };
+
+Manager.prototype.updateTab = function(level) {
+  for (var i = 0, l = this.files.length; i < l; i++) {
+    if(this.files[i].level == level) {
+      break;
+    }
+  }
+  var tab = $(this.tabs.domObject).find("[tabid=\""+this.files[i].tabid+"\"]");
+  tab.text(level.levelName + (level.unsaved ? " *" : ""));
+}
 
 Manager.prototype.openLevel = function(path) {
   var contents = fs.readFileSync(path, {encoding: "utf8"});

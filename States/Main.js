@@ -82,6 +82,11 @@ g.States.Main = {
     this.openLevel.show();
   },
 
+  saveLevel: function() {
+    this.openLevel.save();
+    g.manager.updateTab(this.openLevel);
+  },
+
   levelClick: function() {
     if (this.openLevel == null) { return; }
     var point = Phaser.Canvas.getOffset(this.game.canvas);
