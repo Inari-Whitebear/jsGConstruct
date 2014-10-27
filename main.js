@@ -22,24 +22,6 @@ var layout;
 var ipc = require("ipc");
 
 $("document").ready(function () {
-  layout = $("body").layout( {
-    defaults: {
-      applyDefaultStyles: true,
-      closable: false,
-      resizable: false,
-      slideable: false
-    },
-    north: {
-      size: "auto"
-    },
-    east: {
-      resizable: true
-    },
-    south: {
-      size: 30
-    }
-  });
-
   var tabs = $("#level_tabs").scrollTabs();
 
   var menu = $("#main_menu").jMenu();
@@ -76,6 +58,24 @@ $("document").ready(function () {
   });
 
   $("#side_tabs_tiles").click();
+
+  layout = $("body").layout( {
+    defaults: {
+      applyDefaultStyles: true,
+      closable: false,
+      resizable: false,
+      slideable: false
+    },
+    north: {
+      size: "auto"
+    },
+    east: {
+      resizable: true
+    },
+    south: {
+      size: 30
+    }
+  });
 });
 
 //layout.options.east.resizable = true;
