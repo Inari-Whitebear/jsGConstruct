@@ -2,6 +2,14 @@
 
 var g = window.g;
 
+/*
+TODO:
+  ~~~Bugfixes
+  - change tile selection to feel better when dragging to the right/bottom (jump to next tile earlier)
+  - make last row/column selectable
+  - allow to go off the level to the bottom/right when placing tiles
+*/
+
 g.States.Main = {
   create: function() {
     this.subStage = new Phaser.Stage(this.game);
@@ -36,19 +44,23 @@ g.States.Main = {
     var self = this;
     this.subCanvasDragging = false;
 
+    this.levelMode = "none";
+    this.levelTileCropRect = new Phaser.Rectangle(0, 0, 0, 0);
+
     this.tileSelection = {};
     this.tileSelection.rawRect = { x: 0, y: 0, w: 0, h: 0 };
     this.tileSelection.rect = { x: 0, y: 0, w: 0, h: 0 };
     this.tileSelection.dirty = false;
+    
 
     this.tileSelection.calcRect = function() {
-      if(this.rawRect.w < 0) {
+      if (this.rawRect.w < 0) {
         this.rect.x = this.rawRect.x + this.rawRect.w;
       } else {
         this.rect.x = this.rawRect.x;
       }
 
-      if(this.rawRect.h < 0) {
+      if (this.rawRect.h < 0) {
         this.rect.y = this.rawRect.y + this.rawRect.h;
       } else {
         this.rect.y = this.rawRect.y;
@@ -58,6 +70,10 @@ g.States.Main = {
       this.rect.h = Math.abs(this.rawRect.h);
     };
 
+    this.levelTilePlacing = new Phaser.Sprite(this.game, 0, 0, "pics1");
+    this.levelTilePlacing.crop(this.levelTileCropRect);
+    this.game.add.existing(this.levelTilePlacing);
+
     var callbacks = { "mousedown": downCallback, "mouseup": upCallback, "mousemove": moveCallback };
     var mousePosHelper = function(event) {
       var offset = $(canvas).offset();
@@ -66,9 +82,18 @@ g.States.Main = {
       callbacks[event.type].call(self,xClick,yClick);
     };
 
+    /*this.game.canvas.addEventListener("mouseover", function() {
+      self.levelTilePlacing.visible = true;
+    });
+
+    this.game.canvas.addEventListener("mouseout", function() {
+      self.levelTilePlacing.visible = false;
+    });*/
+
     this.subCanvas.addEventListener("mousedown", mousePosHelper);
     this.subCanvas.addEventListener("mouseup", mousePosHelper);
     this.subCanvas.addEventListener("mousemove", mousePosHelper);
+    this.game.stage.checkOffsetInterval = 100;
   },
 
   subCanvasMouseDown: function(x, y) {
@@ -87,6 +112,13 @@ g.States.Main = {
     if (this.subCanvasDragging) {
       this.subCanvasDragging = false;
       this.tileSelection.calcRect();
+
+      this.levelTileCropRect.x = this.tileSelection.rect.x * 16;
+      this.levelTileCropRect.y = this.tileSelection.rect.y * 16;
+      this.levelTileCropRect.width = this.tileSelection.rect.w * 16;
+      this.levelTileCropRect.height = this.tileSelection.rect.h * 16;
+      this.levelTilePlacing.updateCrop();
+      this.levelMode = "placing";
     }
   },
 
@@ -98,7 +130,7 @@ g.States.Main = {
     var sizeW = tileX - this.tileSelection.rawRect.x;
     var sizeH = tileY - this.tileSelection.rawRect.y;
 
-    if(this.tileSelection.rawRect.w !== sizeW || this.tileSelection.rawRect.h !== sizeH) {
+    if (this.tileSelection.rawRect.w !== sizeW || this.tileSelection.rawRect.h !== sizeH) {
       this.tileSelection.dirty = true;
       this.tileSelection.rawRect.w = sizeW;
       this.tileSelection.rawRect.h = sizeH;
@@ -106,7 +138,7 @@ g.States.Main = {
   },
 
   update: function() {
-    if(this.tileSelection.dirty) {
+    if (this.tileSelection.dirty) {
       this.tileSelection.dirty = false;
 
       this.subCanvasOverlay.clear();
@@ -116,11 +148,11 @@ g.States.Main = {
       var drawOffX = 0;
       var drawOffY = 0;
 
-      if(drawW === 0) {
+      if (drawW === 0) {
         drawW = 4;
         drawOffX = -2;
       }
-      if(drawH === 0) {
+      if (drawH === 0) {
         drawH = 4;
         drawOffY = -2;
       }
@@ -132,6 +164,24 @@ g.States.Main = {
       this.subCanvasOverlay.context.rect(this.tileSelection.rect.x * 16 + drawOffX, this.tileSelection.rect.y * 16 + drawOffY, drawW, drawH);
       this.subCanvasOverlay.context.fill();
       this.subCanvasOverlay.context.stroke();
+    }
+
+    if (this.levelMode === "placing") {
+      if (this.levelTilePlacing.visible) {
+
+        var point = Phaser.Canvas.getOffset(this.game.canvas);
+        var pointerTileX = Math.round((this.game.input.mousePointer.pageX - point.x) / 16);
+        var pointerTileY = Math.round((this.game.input.mousePointer.pageY - point.y) / 16);
+
+        this.levelTilePlacing.x = pointerTileX * 16 - this.levelTileCropRect.width;
+        this.levelTilePlacing.y = pointerTileY * 16 - this.levelTileCropRect.height;
+        this.levelTilePlacing.bringToTop();
+        //this.levelTilePlacing.visible = true;
+      } else {
+        //this.levelTilePlacing.visible = false;
+      }
+    } else {
+      //this.levelTilePlacing.visible = false;
     }
 
     this.subStage.preUpdate();
