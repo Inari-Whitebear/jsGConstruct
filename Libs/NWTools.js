@@ -153,15 +153,46 @@ g.NWTools = {
 
   createBlankNW: function() {
     var data = {};
-
     data.layers = [];
-    data.layers.push(this.getBlankLayerData());
+
+    var layerData = this.getBlankLayerData(0);
+    var layerOutput = [];
+    var output = "";
+    for(var y = 0; y < 64; y++) {
+      output += layerData[y].join(",") + "\n";
+    }
+
+    data.layers.push(output);
 
     return data;
   },
 
   getNWDataString: function(level) {
-    var output = "GLEVNW01";
+    var output = "GLEVNW01\n";
+    var dataValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+    var layer, tileData, dataLine, layerData, index, tileDataString;
+    for(var i = 0, l = level.tileMap.layers.length; i < l; i++) {
+      layer = level.tileMap.layers[i];
+      tileData = layer.data;
+      layerData = "";
+
+      // TODO: fix for multi-layer support
+      for(var y = 0; y < level.height; y++) {
+        dataLine = "";
+        for(var x = 0; x < level.width; x++) {
+          index = this.toGraalIndex(tileData[y][x].index);
+          tileDataString = dataValues.slice(index % dataValues.length, (index % dataValues.length) + 1);
+          tileDataString = dataValues.slice(Math.floor(index / dataValues.length), Math.floor(index / dataValues.length) + 1 ) + tileDataString;
+
+          dataLine += tileDataString;
+        }
+        if(dataLine !== "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") {
+          layerData += "BOARD 0 " + y + " 64 " + i + " " + dataLine + "\n";
+        }        
+      }
+      output += layerData;
+    }
 
     return output;
   },
@@ -180,7 +211,7 @@ g.NWTools = {
     var tileXPos = phaserIndex % 128;
     var tileYPos = Math.floor(phaserIndex / 128);
     var section = Math.floor(tileXPos / 16);
-    var sectionIndex = tileYPos * 16 + tileXPos;
+    var sectionIndex = tileYPos * 16 + (tileXPos % 16);
 
     var graalIndex = section * 512 + sectionIndex;
     return graalIndex;

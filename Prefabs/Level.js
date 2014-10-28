@@ -25,8 +25,12 @@ function Level(game, levelName, data, width, height) {
 
   this.tileMap.setPreventRecalculate(true);
 
-  if (data != null)
+  if (data != null) {
     this.loadFrom(data, levelName);
+  } else {
+    this.data = g.NWTools.createBlankNW();
+    this.unsaved = true;
+  }
   //this.layers.push(new g.Prefabs.LevelLayer(this, 0));
 }
 
