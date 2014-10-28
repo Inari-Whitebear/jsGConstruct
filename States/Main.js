@@ -56,7 +56,7 @@ g.States.Main = {
     this.subCanvas.addEventListener("mousemove", mousePosHelper);
 
     // Data for level editing
-    this.activeLayer = 1;
+    this.activeLayer = 0;
     this.tileSelection = {
       rect: new g.Prefabs.NormRect(),
       cropRect: new Phaser.Rectangle(0, 0, 0, 0),

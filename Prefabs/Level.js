@@ -1,6 +1,8 @@
 "use strict";
 
 var g = window.g;
+var fs = require("fs");
+var nodePath = require("path");
 
 function Level(game, levelName, data, width, height) {
   if (width == null) { width = g.levelWidth; }
@@ -9,6 +11,7 @@ function Level(game, levelName, data, width, height) {
   this.width = width;
   this.height = height;
   this.levelName = levelName;
+  this.path = "";
   this.game = game;
 
   this.data = {};
@@ -23,17 +26,35 @@ function Level(game, levelName, data, width, height) {
   this.tileMap.setPreventRecalculate(true);
 
   if (data != null)
-    this.loadFrom(data);
+    this.loadFrom(data, levelName);
   //this.layers.push(new g.Prefabs.LevelLayer(this, 0));
 }
 
-Level.prototype.loadFrom = function(dataString) {
+Level.prototype.loadFrom = function(dataString, path) {
   this.data = g.NWTools.parseNWDataString(dataString);
+  this.path = path;
+  this.levelName = nodePath.basename(path);
+  this.unsaved = false;
   this.dataLoaded = true;
 };
 
-Level.prototype.save = function() {
-  this.unsaved = false;
+Level.prototype.save = function(forceChoice) {
+  if(this.path === "" || forceChoice) {
+    var ipc = require("ipc");
+    var path = ipc.sendSync("saveFile");
+    if(path != null) {
+      this.path = path;
+      this.levelName = nodePath.basename(path);
+      this.unsaved = true;
+    } else {
+      if(forceChoice) { return; }
+    }
+  }
+
+  if(this.path !== "") {
+    fs.writeFileSync(this.path, g.NWTools.getNWDataString(this), {encoding: "utf8"});
+    this.unsaved = false;  
+  }
 };
 
 Level.prototype.show = function() {
@@ -65,10 +86,16 @@ Level.prototype.create = function() {
   this.loaded = true;
 
   for (var i = 0, l = this.data.layers.length; i < l; i++) {
-    var layer = this.tileMap.createBlankLayer("layer_" + i, this.width, this.height, g.tileWidth, g.tileHeight, this.layers);
-    if (i === 0) {
+    var layerCSV = this.data.layers[i];
+    //this.game.cache.addTilemap("tempLoadCSV", "", layerCSV, Phaser.Tilemap.CSV);
+
+    var mapData = Phaser.TilemapParser.parseCSV("", layerCSV, g.tileWidth, g.tileHeight);
+    this.tileMap.layers[i] = mapData.layers[0];
+
+    var layer = this.tileMap.createLayer(i, this.width * g.tileWidth, this.height * g.tileHeight, this.layers);
+    /*if (i === 0) {
       this.tileMap.fill(0, 0, 0, this.width, this.height, layer.index);
-    }
+    }*/
   }
 
   this.tileMap.addTilesetImage("pics1", "pics1", g.tileWidth, g.tileHeight, 0, 0, 0);

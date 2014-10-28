@@ -42,7 +42,7 @@ Manager.prototype.updateTab = function(level) {
       break;
     }
   }
-  var tab = $(this.tabs.domObject).find("[tabid=\""+this.files[i].tabid+"\"]");
+  var tab = $(this.tabs.domObject).find("[tabid=\"" + this.files[i].tabid + "\"]");
   tab.text(level.levelName + (level.unsaved ? " *" : ""));
 }
 
@@ -53,9 +53,8 @@ Manager.prototype.openLevel = function(path) {
   this.files.push({tabid: this.maxID, level: level});
 
   level.create();
-  //level.show();
-  this.tabs.addTab("<span tabid=\""+this.maxID+"\">unnamed</span>");
-  var tab = $(this.tabs.domObject).find("[tabid=\""+this.maxID+"\"]");
+  this.tabs.addTab("<span tabid=\"" + this.maxID + "\">" + level.levelName + "</span>");
+  var tab = $(this.tabs.domObject).find("[tabid=\"" + this.maxID + "\"]");
   this.maxID++;
   tab.click();
 };

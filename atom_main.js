@@ -22,7 +22,12 @@ app.on("window-all-closed", function() {
 
 ipc.on("openFile", function(event, arg) {
   var result = dialog.showOpenDialog(mainWindow, {properties: ["openFile"]});
-  event.returnValue = result;
+  event.returnValue = result || null;
+});
+
+ipc.on("saveFile", function(event, arg) {
+  var result = dialog.showSaveDialog(mainWindow);
+  event.returnValue = result || null;
 });
 
 ipc.on("close", function() {
