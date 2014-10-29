@@ -7,50 +7,50 @@ g.NWTools = {
     var data = this.createBlankNW();
 
     var dataValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    nwString = nwString.replace(/\r/g," ");
-    nwString = nwString.replace(/\n/g," ");
+    nwString = nwString.replace(/\r/g,"");
+    //nwString = nwString.replace(/\n/g," ");
+    var nwLines = nwString.split("\n");
 
-    if (nwString.slice(0,8) !== "GLEVNW01") { return null; }
-    nwString = nwString.slice(9);
-
+    if (nwLines[0] !== "GLEVNW01") { return null; }
     var layerData = [];
+    var miscData = "";
+    
+    var nwData, xOff, yOff, dataLength, dataLayer, boardDataString, tileB64, tileIndex, phaserIndex;
+    for(var i = 0, l = nwLines.length; i < l; i++) {
+      if (nwLines[i].slice(0,6) === "BOARD ") {
+        nwString = nwLines[i].trim();
+        nwData = nwString.split(" ");
 
-    while (nwString.slice(0,6) === "BOARD ") {
-      nwString = nwString.slice(6);
-      var pos = nwString.indexOf(" ");
-      var xOff = parseInt(nwString.slice(0, pos));
-      nwString = nwString.slice(pos + 1);
+        xOff = parseInt(nwData[1]);
+        yOff = parseInt(nwData[2]);
+        dataLength = parseInt(nwData[3]);
+        dataLayer = parseInt(nwData[4]);
 
-      pos = nwString.indexOf(" ");
-      var yOff = parseInt(nwString.slice(0, pos));
-      nwString = nwString.slice(pos + 1);
+        if(dataLayer === 0) {
+          if (layerData[dataLayer] == null) {
+            layerData[dataLayer] = this.getBlankLayerData(0);
+          }
 
-      pos = nwString.indexOf(" ");
-      var dataLength = parseInt(nwString.slice(0, pos));
-      nwString = nwString.slice(pos + 1);
+          boardDataString = nwData[5];
+          for (var j = 0, jL = boardDataString.length; j < jL; j += 2) {
+            tileB64 = boardDataString.slice(j, j + 2);
+            tileIndex = dataValues.indexOf(tileB64[1]);
+            tileIndex += dataValues.indexOf(tileB64[0]) * dataValues.length;
 
-      pos = nwString.indexOf(" ");
-      var dataLayer = parseInt(nwString.slice(0, pos));
-      nwString = nwString.slice(pos + 1);
-
-      if(dataLayer === 0) {
-        if (layerData[dataLayer] == null) {
-          layerData[dataLayer] = this.getBlankLayerData(0);
+            phaserIndex = this.toPhaserIndex(tileIndex);
+            layerData[dataLayer][yOff][xOff + (j / 2)] = phaserIndex;
+          }
+        } else {
+          miscData += nwLines[i] + "\n";
         }
-
-        var boardDataString = nwString.slice(0, dataLength * 2);
-        for (var i = 0; i < boardDataString.length; i += 2) {
-          var tileB64 = boardDataString.slice(i, i + 2);
-          var tileIndex = dataValues.indexOf(tileB64[1]);
-          tileIndex += dataValues.indexOf(tileB64[0]) * dataValues.length;
-
-          var phaserIndex = this.toPhaserIndex(tileIndex);
-          layerData[dataLayer][yOff][xOff + (i / 2)] = phaserIndex;
-        }
-        nwString = nwString.slice(dataLength * 2);
-        nwString = nwString.trim();
+      } else {
+        miscData += nwLines[i] + "\n";
       }
     }
+    
+
+
+    
 /*
     var links = [];
 
@@ -136,6 +136,7 @@ g.NWTools = {
     }
 
     data.layers = layerOutput;
+    data.miscData = miscData;
 
     return data;
   },
@@ -193,6 +194,8 @@ g.NWTools = {
       }
       output += layerData;
     }
+
+    output += level.miscData;
 
     return output;
   },

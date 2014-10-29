@@ -14,6 +14,8 @@ function Level(game, levelName, data, width, height) {
   this.path = "";
   this.game = game;
 
+  this.miscData = ""; // TODO: support everything to make this unnecessary
+
   this.data = {};
   this.visible = false;
   this.layers = new Phaser.Group(game, null);
@@ -106,6 +108,8 @@ Level.prototype.create = function() {
       this.tileMap.fill(0, 0, 0, this.width, this.height, layer.index);
     }*/
   }
+
+  this.miscData = this.data.miscData;
 
   this.tileMap.addTilesetImage("pics1", "pics1", g.tileWidth, g.tileHeight, 0, 0, 0);
 };
