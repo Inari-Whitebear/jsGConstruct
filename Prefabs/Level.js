@@ -42,6 +42,11 @@ Level.prototype.loadFrom = function(dataString, path) {
   this.dataLoaded = true;
 };
 
+Level.prototype.destroy = function() {
+  this.tileMap.destroy();
+  this.layers.destroy();
+};
+
 Level.prototype.save = function(forceChoice) {
   if(this.path === "" || forceChoice) {
     var ipc = require("ipc");

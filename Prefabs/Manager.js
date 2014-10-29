@@ -23,6 +23,53 @@ Manager.prototype.newLevel = function() {
   tab.click();
 };
 
+Manager.prototype.closeLevel = function(level) {
+  if (level == null) {
+    level = g.States.Main.openLevel;
+  }
+
+  if(level == null) { return; }
+
+  for (var i = 0, l = this.files.length; i < l; i++) {
+    if (this.files[i].level == level) {
+      this.tabs.removeTabs("[tabid=\"" + this.files[i].tabid + "\"]");
+      break;
+    }
+  }
+
+  this.files.splice(i, 1);
+
+  if (g.States.Main.openLevel == level) {
+    if (this.files.length > 0) {
+      var newId;
+      if (i > 0) {
+        var newId = i - 1;
+      } else {
+        newId = 0;
+      }
+
+      var tab = $(this.tabs.domObject).find("[tabid=\""+this.files[newId].tabid+"\"]");
+      tab.click();
+    } else {
+      level.hide();
+      g.States.Main.openLevel = null;
+    }
+  }
+
+  level.destroy();
+};
+
+Manager.prototype.saveLevel = function(level, forceChoice) {
+  if(level == null) {
+    level = g.States.Main.openLevel;
+  }
+
+  if(level == null) { return; }
+
+  level.save(forceChoice);
+  this.updateTab(level);
+};
+
 Manager.prototype.tabClicked = function(event) {
   g.manager.setSelectedTab($(event.target).attr("tabid"));
 };

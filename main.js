@@ -44,11 +44,20 @@ $("document").ready(function () {
   });
 
   $("#menu_save").click(function() {
-    g.States.Main.saveLevel();
+    g.manager.saveLevel();
   });
+
+  $("#menu_saveAs").click(function() {
+    g.manager.saveLevel(null, true);
+  });
+
 
   $("#menu_about").click(function() {
     $("#about_dialog").dialog({});
+  });
+
+  $("#menu_close").click(function() {
+    g.manager.closeLevel();
   });
 
   var side_tabs = $("#side_tabs").scrollTabs({
