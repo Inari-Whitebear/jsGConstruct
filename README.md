@@ -1,7 +1,7 @@
 jsGConstruct
 ============
 An unofficial level editor for Graal Online.  
-**Version 0.0.6**
+**Version 0.0.7**
 
 Crude Roadmap (WIP)
 -------------------
@@ -10,7 +10,7 @@ Crude Roadmap (WIP)
 * [Working?] Simple, but working, level loading and saving. (No layers/signs/npcs/links)
 * [WIP] Basic UI working
 * [WIP] Fix crude bugs
-* [ToDo] Ask for Graal folder to load images from there
+* [99%] Ask for Graal folder to load images from there
 * [ToDo] Add proper documentation on how to run it
 
 ### 0.1.2
