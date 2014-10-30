@@ -80,8 +80,8 @@ TileSelection.prototype.canvasMouseDown = function(x, y) {
   if (!this.enabled) { return; }
   this.dragging = true;
 
-  var tileX = Math.floor((x + 4) / 16);
-  var tileY = Math.floor((y + 4) / 16);
+  var tileX = Math.floor((x + 8) / 16);
+  var tileY = Math.floor((y + 8) / 16);
 
   this.selectionRect.rawRect.x = tileX;
   this.selectionRect.rawRect.y = tileY;
@@ -108,8 +108,8 @@ TileSelection.prototype.canvasMouseUp = function(x, y) {
 TileSelection.prototype.canvasMouseMove = function(x, y) {
   if (!this.enabled) { return; }
   if (!this.dragging) { return; }
-  var tileX = Math.floor(x / 16);
-  var tileY = Math.floor(y / 16);
+  var tileX = Math.floor((x + 8) / 16);
+  var tileY = Math.floor((y + 8) / 16);
 
   var sizeW = tileX - this.selectionRect.rawRect.x;
   var sizeH = tileY - this.selectionRect.rawRect.y;

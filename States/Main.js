@@ -6,7 +6,6 @@ var g = window.g;
 TODO:
   ~~~Bugfixes
   - change tile selection to feel better when dragging to the right/bottom (jump to next tile earlier)
-  - make last row/column selectable
   - allow to go off the level to the bottom/right when placing tiles
 */
 
