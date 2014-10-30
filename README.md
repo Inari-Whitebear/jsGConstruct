@@ -1,13 +1,32 @@
 jsGConstruct
 ============
-An unofficial level editor for Graal Online.  
+An unofficial level editor for the online-game Graal Online (http://www.graalonline.com).  
 **Version 0.0.7**
+
+Running
+-------
+
+(WIP)
+
+Features
+--------
+
+### Working
+* Simple saving/loading (need to check if layers don't break!)
+* Creating new levels
+* Very Basic UI and UI interaction
+
+### ToDo
+* Support for Layers/NPCs/Links/Signs/Baddies
+* Better and more complete UI
+* Documentation
+* Someday scripts?
 
 Crude Roadmap (WIP)
 -------------------
 
 ### 0.1.0
-* [Working?] Simple, but working, level loading and saving. (No layers/signs/npcs/links)
+* [Working?] Simple (but working) level loading and saving. (No layers/signs/npcs/links yet)
 * [WIP] Basic UI working
 * [WIP] Fix crude bugs
 * [99%] Ask for Graal folder to load images from there
