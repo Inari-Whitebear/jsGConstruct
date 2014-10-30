@@ -92,6 +92,14 @@ $("document").ready(function () {
       size: 30
     }
   });
+
+  var graalFolder = ipc.sendSync("chooseFolder");
+
+  if(graalFolder == null) {
+    ipc.sendSync("close");
+  }
+
+  g.graalFolder = graalFolder[0];
 });
 
 require("./States/load.js")(game);
@@ -99,6 +107,7 @@ require("./Prefabs/load.js");
 require("./Libs/NWTools.js");
 
 g.manager = new g.Prefabs.Manager(game);
+g.fileManager = new g.Prefabs.FileManager(game);
 g.game = game;
 
 game.state.start("Startup");

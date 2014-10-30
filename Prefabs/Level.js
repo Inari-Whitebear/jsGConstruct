@@ -13,8 +13,12 @@ function Level(game, levelName, data, width, height) {
   this.levelName = levelName;
   this.path = "";
   this.game = game;
+  this.tileset = "";
 
   this.miscData = ""; // TODO: support everything to make this unnecessary
+
+  this.onLoaded = new Phaser.Signal();
+  this.onLoaded.add(this._onLoaded, this);
 
   this.data = {};
   this.visible = false;
@@ -47,6 +51,7 @@ Level.prototype.loadFrom = function(dataString, path) {
 Level.prototype.destroy = function() {
   this.tileMap.destroy();
   this.layers.destroy();
+  this.onLoaded.dispose();
 };
 
 Level.prototype.save = function(forceChoice) {
@@ -70,7 +75,9 @@ Level.prototype.save = function(forceChoice) {
 
 Level.prototype.show = function() {
   this.visible = true;
-  this.game.world.add(this.layers);
+  if (this.loaded) {
+    this.game.world.add(this.layers);
+  }
 };
 
 Level.prototype.placeTiles = function(x, y, tileArray, layer) {
@@ -88,13 +95,16 @@ Level.prototype.hide = function() {
   this.game.world.remove(this.layers);
 };
 
+Level.prototype._onLoaded = function() {
+  this.loaded = true;
+  if (this.visible) { this.show(); }
+}
+
 Level.prototype.create = function() {
   if (!this.dataLoaded) {
     this.data = g.NWTools.createBlankNW();
     this.dataLoaded = true;
   }
-
-  this.loaded = true;
 
   for (var i = 0, l = this.data.layers.length; i < l; i++) {
     var layerCSV = this.data.layers[i];
@@ -110,8 +120,12 @@ Level.prototype.create = function() {
   }
 
   this.miscData = this.data.miscData;
+  this.tileset = "pics1.png";
 
-  this.tileMap.addTilesetImage("pics1", "pics1", g.tileWidth, g.tileHeight, 0, 0, 0);
+  g.fileManager.loadImage("pics1.png", function(key, success) {
+    this.tileMap.addTilesetImage("pics1.png", "pics1.png", g.tileWidth, g.tileHeight, 0, 0, 0);
+    this.onLoaded.dispatch();
+  }, this);
 };
 
 module.exports = Level;

@@ -24,7 +24,8 @@ g.States.Main = {
     this.subWorld.camera = new Phaser.Camera(this.game, 0, 0, 0, 2048, 512);
     this.subWorld.camera.displayObject = this.subWorld;
 
-    this.tileset = new Phaser.Sprite(this.game, 0, 0, "pics1", "");
+    //g.fileManager.loadImage("pics1.png");
+    this.tileset = new Phaser.Sprite(this.game, 0, 0, "missing");
 
     this.subStage.addChild(this.subWorld);
     this.subWorld.add(this.tileset);
@@ -66,7 +67,7 @@ g.States.Main = {
     };
     this.openLevel = null;
 
-    this.levelTilePlacing = new Phaser.Sprite(this.game, 0, 0, "pics1");
+    this.levelTilePlacing = new Phaser.Sprite(this.game, 0, 0, "missing");
     this.levelTilePlacing.crop(this.tileSelection.cropRect);
     this.game.add.existing(this.levelTilePlacing);
 
@@ -78,8 +79,23 @@ g.States.Main = {
       this.openLevel.hide();
     }
 
+
     this.openLevel = level;
+    if (this.openLevel.loaded) {
+      this.openLevelLoaded();
+    } else {
+      this.openLevel.onLoaded.addOnce(this.openLevelLoaded, this);
+    }
+  },
+
+  openLevelLoaded: function()
+  {
+    if (!this.openLevel.loaded) { return; }
     this.openLevel.show();
+
+    this.tileset.loadTexture(this.openLevel.tileset);
+    this.levelTilePlacing.loadTexture(this.openLevel.tileset);
+    this.levelTilePlacing.updateCrop();
   },
 
   levelClick: function() {
@@ -103,6 +119,7 @@ g.States.Main = {
   },
 
   subCanvasMouseDown: function(x, y) {
+    if (this.openLevel == null) { return; }
     this.tileSelection.dragging = true;
 
     var tileX = Math.floor((x + 4) / 16);
@@ -116,6 +133,7 @@ g.States.Main = {
   },
 
   subCanvasMouseUp: function(x, y) {
+    if (this.openLevel == null) { return; }
     if (this.tileSelection.dragging) {
       this.tileSelection.dragging = false;
       this.tileSelection.rect.calcRect();
@@ -130,6 +148,7 @@ g.States.Main = {
   },
 
   subCanvasMouseMove: function(x, y) {
+    if (this.openLevel == null) { return; }
     if (!this.tileSelection.dragging) { return; }
     var tileX = Math.floor(x / 16);
     var tileY = Math.floor(y / 16);

@@ -34,6 +34,11 @@ ipc.on("close", function() {
   mainWindow.close();
 });
 
+ipc.on("chooseFolder", function(event, arg) {
+  var result = dialog.showOpenDialog(mainWindow, {properties: ["openDirectory"], title: "Graal Folder"});
+  event.returnValue = result || null;
+});
+
 // This method will be called when atom-shell has done everything
 // initialization and ready for creating browser windows.
 app.on("ready", function() {

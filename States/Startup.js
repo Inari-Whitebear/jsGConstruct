@@ -4,11 +4,10 @@ var g = window.g;
 
 g.States.Startup = {
   preload: function() {
-    this.game.load.image("pics1","pics1.png");
-    this.game.load.image("block","block.png");
   },
 
   create: function() {
+    g.fileManager.boot();  	
     this.game.state.start("Main");
   }
 };
