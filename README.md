@@ -25,11 +25,13 @@ Features
 Crude Roadmap (WIP)
 -------------------
 
+"Working?" = "Implemented, but possibly has remaining bugs and broken functionality"
+
 ### 0.1.0
 * [Working?] Simple (but working) level loading and saving. (No layers/signs/npcs/links yet)
 * [WIP] Basic UI working
 * [WIP] Fix crude bugs
-* [99%] Ask for Graal folder to load images from there
+* [Working?] Ask for Graal folder to load images from there
 * [ToDo] Add proper documentation on how to run it
 
 ### 0.1.2
