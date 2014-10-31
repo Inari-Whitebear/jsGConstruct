@@ -5,7 +5,7 @@ var g = window.g;
 /*
 TODO:
   ~~~Bugfixes
-  - change tile selection to feel better when dragging to the right/bottom (jump to next tile earlier)
+  - change tile selection to feel better when dragging to the right/bottom (jump to next tile earlier)?
   - allow to go off the level to the bottom/right when placing tiles
 */
 
@@ -13,7 +13,6 @@ g.States.Main = {
   create: function() {
     this.tileSelection = new g.Prefabs.TileSelection(this.game, "tile_render");
     this.tileSelection.onSelectionChanged.add(this.tileSelectionChanged, this);
-    //this.tileSelection.onTilesSelected.add(this.tileSelectionChanged, this);
 
     // Data for level editing
     this.activeLayer = 0;

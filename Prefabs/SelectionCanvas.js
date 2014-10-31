@@ -107,7 +107,6 @@ SelectionCanvas.prototype.getPointer = function() {
     pointerX = (this.game.input.mousePointer.pageX - point.x);
     pointerY = (this.game.input.mousePointer.pageY - point.y);
   } else {
-    //console.log(this._pointer.x);
     pointerX = this._pointer.x;
     pointerY = this._pointer.y;
   }
@@ -149,10 +148,6 @@ SelectionCanvas.prototype.onMouseUp = function() {
       this.overlay.clear();
     }
 
-    //this.cropRect.x = this.selectionRect.x * 16;
-    //this.cropRect.y = this.selectionRect.y * 16;
-    //this.cropRect.width = this.selectionRect.w * 16;
-    //this.cropRect.height = this.selectionRect.h * 16;
     this.onSelected.dispatch();
   }
 };
