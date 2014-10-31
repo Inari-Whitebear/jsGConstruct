@@ -12,7 +12,8 @@ TODO:
 g.States.Main = {
   create: function() {
     this.tileSelection = new g.Prefabs.TileSelection(this.game, "tile_render");
-    this.tileSelection.onTilesSelected.add(this.tileSelectionChanged, this);
+    this.tileSelection.onSelectionChanged.add(this.tileSelectionChanged, this);
+    //this.tileSelection.onTilesSelected.add(this.tileSelectionChanged, this);
 
     // Data for level editing
     this.activeLayer = 0;
@@ -25,12 +26,15 @@ g.States.Main = {
 
     this.game.input.onDown.add(this.levelClick, this);
     this.game.input.onUp.add(this.levelMouseUp, this);
+
+    this.levelSelection = new g.Prefabs.SelectionCanvas(this.game, this.game.world, "levelSelection", 64 * 16, 64 * 16);
+
+    this.setMode("none");
   },
 
   tileSelectionChanged: function() {
     this.levelTilePlacing.updateCrop();
-    this.placeMode = "placing";
-    this.levelTilePlacing.visible = true;
+    this.setMode("placing");
   },
 
   setOpenLevel: function(level) {
@@ -69,34 +73,38 @@ g.States.Main = {
 
     var pointerTile = this.getPointerTile();
     if (this.game.input.mouse.button === 0) {
-      this.openLevel.placeTiles(pointerTile[0] - this.tileSelection.selectionRect.w, pointerTile[1] - this.tileSelection.selectionRect.h, this.getSelectedTileArray(), this.activeLayer);
+      this.openLevel.placeTiles(pointerTile[0] - this.tileSelection.selectionCanvas.selectionRect.w, pointerTile[1] - this.tileSelection.selectionCanvas.selectionRect.h, this.tileSelection.selectedTileArray, this.activeLayer);
     } else if (this.game.input.mouse.button === 2) {
-      this.openLevel.floodFill(pointerTile[0] - this.tileSelection.selectionRect.w, pointerTile[1] - this.tileSelection.selectionRect.h, this.getSelectedTileArray()[0][0], this.activeLayer);
+      this.openLevel.floodFill(pointerTile[0] - this.tileSelection.selectionCanvas.selectionRect.w, pointerTile[1] - this.tileSelection.selectionCanvas.selectionRect.h, this.tileSelection.selectedTileArray[0][0], this.activeLayer);
     }
   },
 
   levelMouseUp: function() {
     var pointerTile = this.getPointerTile();
-
-    this.placeMode = "none";
-    this.levelTilePlacing.visible = false;
+    this.setMode("none");
   },
 
-  getSelectedTileArray: function() {
-    var tileArray = [];
-    for (var tX = 0; tX < this.tileSelection.selectionRect.w; tX++) {
-      tileArray[tX] = [];
-      for (var tY = 0; tY < this.tileSelection.selectionRect.h; tY++) {
-        tileArray[tX][tY] = tX + this.tileSelection.selectionRect.x + (tY + this.tileSelection.selectionRect.y) * 128;
-      }
+  setMode: function(newMode) {
+    this.placeMode = newMode;
+    switch(this.placeMode) {
+      case "placing":
+        this.levelTilePlacing.visible = true;
+        this.levelSelection.disable(true);
+        break;
+      case "none":
+        this.levelTilePlacing.visible = false;
+        this.levelSelection.enable(true);
     }
-    return tileArray;
   },
 
   update: function() {
+    //ToDo: make this cleaner
+    this.levelSelection.overlayImage.bringToTop();
+
+    this.levelSelection.update();
+
     if (this.placeMode === "placing") {
       if (this.levelTilePlacing.visible) {
-
         var pointerTile = this.getPointerTile();
 
         this.levelTilePlacing.x = pointerTile[0] * 16 - this.tileSelection.cropRect.width;
@@ -110,5 +118,6 @@ g.States.Main = {
 
   render: function() {
     this.tileSelection.render();
+    this.levelSelection.render();
   }
 };
