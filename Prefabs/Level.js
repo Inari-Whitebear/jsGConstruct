@@ -90,6 +90,27 @@ Level.prototype.placeTiles = function(x, y, tileArray, layer) {
   g.manager.updateTab(this);
 };
 
+var vecx = function(dir) { if (dir === 1) { return 1; } else if(dir === 3) { return -1; } return 0; }
+var vecy = function(dir) { if (dir === 0) { return -1; } else if(dir === 2) { return 1; } return 0; }
+Level.prototype.floodFill = function(x, y, tile, layer, fillIndex) {
+  var tileIndex;
+  if (fillIndex == null ) { fillIndex = this.tileMap.getTile(x, y, layer, true).index; }
+  this.tileMap.putTile(tile, x, y, layer);
+  var tX, tY;
+  for (var i = 0; i < 4; i++) {
+    tX = x + vecx(i);
+    tY = y + vecy(i);
+    if (tX > 0 && tY > 0 && tX < this.width && tY < this.height) {
+      tileIndex = this.tileMap.getTile(tX, tY, layer, true).index;
+      if (tileIndex !== -1) {
+        if (tileIndex === fillIndex) {
+          this.floodFill(tX, tY, tile, layer, fillIndex);
+        }
+      }
+    }
+  }
+}
+
 Level.prototype.hide = function() {
   this.visible = false;
   this.game.world.remove(this.layers);

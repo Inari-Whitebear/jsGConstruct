@@ -67,10 +67,10 @@ g.States.Main = {
     if (this.openLevel == null) { return; }
     if (this.placeMode !== "placing") { return; }
 
+    var pointerTile = this.getPointerTile();
     if (this.game.input.mouse.button === 0) {
-      var pointerTile = this.getPointerTile();
       this.openLevel.placeTiles(pointerTile[0] - this.tileSelection.selectionRect.w, pointerTile[1] - this.tileSelection.selectionRect.h, this.getSelectedTileArray(), this.activeLayer);
-    } else if (this.gam.einput.mouse.button === 2) {
+    } else if (this.game.input.mouse.button === 2) {
       this.openLevel.floodFill(pointerTile[0] - this.tileSelection.selectionRect.w, pointerTile[1] - this.tileSelection.selectionRect.h, this.getSelectedTileArray()[0][0], this.activeLayer);
     }
   },
