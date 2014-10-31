@@ -100,7 +100,7 @@ Level.prototype.floodFill = function(x, y, tile, layer, fillIndex) {
   for (var i = 0; i < 4; i++) {
     tX = x + vecx(i);
     tY = y + vecy(i);
-    if (tX > 0 && tY > 0 && tX < this.width && tY < this.height) {
+    if (tX >= 0 && tY >= 0 && tX < this.width && tY < this.height) {
       tileIndex = this.tileMap.getTile(tX, tY, layer, true).index;
       if (tileIndex !== -1) {
         if (tileIndex === fillIndex) {
