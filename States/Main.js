@@ -38,6 +38,15 @@ g.States.Main = {
     this.levelSelection = new g.Prefabs.SelectionCanvas(this.game, this.game.world, "levelSelection", 64 * 16, 64 * 16);
 
     this.setMode("none");
+
+    var self = this;
+    $("#menu_copy").click(function() {
+      self.onCopy();
+    });
+
+    $("#menu_paste").click(function() {
+      self.onPaste();
+    });
   },
 
   onKeyCopy: function() {
@@ -48,6 +57,12 @@ g.States.Main = {
 
   onCopy: function() {
     this.clipboardTileArray = [];
+
+    if (this.openLevel == null) { return; }
+    if (this.levelSelection.selectionRect.w === 0 || this.levelSelection.selectionRect.h === 0) {
+      return;
+    }
+
     for (var tX = 0; tX < this.levelSelection.selectionRect.w; tX++) {
       this.clipboardTileArray[tX] = [];
       for (var tY = 0; tY < this.levelSelection.selectionRect.h; tY++) {
@@ -63,11 +78,22 @@ g.States.Main = {
   },
 
   onPaste: function() {
+    if (this.levelSelection.selectionRect.w === 0 || this.levelSelection.selectionRect.h === 0) {
+      return;
+    }
+    if (this.openLevel == null) { return; }
+
     this.updateLevelTilePlacing(this.levelSelection.selectionRect, this.openLevel.getLayerByIndex(this.activeLayer).canvas);
+    this.setMode("paste");
   },
 
   updateLevelTilePlacing: function(sourceRect, source) {
     this.levelTilePlacing.clear();
+    if (sourceRect.w === 0 || sourceRect.h === 0) {
+      this.levelTilePlacing.resize(1, 1);
+      return;
+    }
+
     this.levelTilePlacing.resize(sourceRect.w * 16, sourceRect.h * 16);
     this.levelTilePlacing.copy(source, sourceRect.x * 16, sourceRect.y * 16, sourceRect.w * 16, sourceRect.h * 16, 0, 0);
   },
@@ -78,7 +104,7 @@ g.States.Main = {
   },
 
   setOpenLevel: function(level) {
-    if(this.openLevel != null) {
+    if (this.openLevel != null) {
       this.openLevel.hide();
     }
 
