@@ -32,7 +32,8 @@ Crude Roadmap (WIP)
 * [WIP] Basic UI working
  * [Working?] Tile Selection & Placing
  * [Working?] Copy/Paste
- * [ToDo] Cut/Delete
+ * [ToDo] Cut
+ * [Working?] Delete
  * [ToDo] Undo/Redo
 * [WIP] Fix crude bugs
 * [Working?] Ask for Graal folder to load images from there

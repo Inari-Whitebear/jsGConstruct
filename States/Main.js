@@ -33,6 +33,9 @@ g.States.Main = {
     this.keyCaptures.v = this.game.input.keyboard.addKey(Phaser.Keyboard.V);
     this.keyCaptures.v.onUp.add(this.onKeyPaste, this);
 
+    this.keyCaptures.del = this.game.input.keyboard.addKey(Phaser.Keyboard.DELETE);
+    this.keyCaptures.del.onUp.add(this.onKeyDeleteTiles, this);
+
     this.clipboardTileArray = [];
 
     this.levelSelection = new g.Prefabs.SelectionCanvas(this.game, this.game.world, "levelSelection", 64 * 16, 64 * 16);
@@ -46,6 +49,10 @@ g.States.Main = {
 
     $("#menu_paste").click(function() {
       self.onPaste();
+    });
+
+    $("#menu_delete").click(function() {
+      self.onDeleteTiles();
     });
   },
 
@@ -85,6 +92,21 @@ g.States.Main = {
 
     this.updateLevelTilePlacing(this.levelSelection.selectionRect, this.openLevel.getLayerByIndex(this.activeLayer).canvas);
     this.setMode("paste");
+  },
+
+  onKeyDeleteTiles: function() {
+    if (!this.keyCaptures.del.altKey && !this.keyCaptures.del.shiftKey && ! this.keyCaptures.del.ctrlKey) {
+      this.onDeleteTiles();
+    }
+  },
+
+  onDeleteTiles: function() {
+    if (this.levelSelection.selectionRect.w === 0 || this.levelSelection.selectionRect.h === 0) {
+      return;
+    }
+    if (this.openLevel == null) { return; }
+
+    this.openLevel.clearArea(this.levelSelection.selectionRect.x, this.levelSelection.selectionRect.y, this.levelSelection.selectionRect.w, this.levelSelection.selectionRect.h, this.activeLayer);
   },
 
   updateLevelTilePlacing: function(sourceRect, source) {

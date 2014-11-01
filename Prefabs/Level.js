@@ -120,6 +120,13 @@ Level.prototype.floodFill = function(x, y, tile, layer, fillIndex) {
   }
 }
 
+Level.prototype.clearArea = function(x, y, w, h, layer) {
+  var tile = -1;
+  if (layer === 0) { tile = 0; }
+
+  this.tileMap.fill(tile, x, y, w, h, layer);
+};
+
 Level.prototype.hide = function() {
   this.visible = false;
   this.game.world.remove(this.layers);
