@@ -40,6 +40,15 @@ function Level(game, levelName, data, width, height) {
   //this.layers.push(new g.Prefabs.LevelLayer(this, 0));
 }
 
+Level.prototype.getLayerByIndex = function(index) {
+  for (var i = 0, l = this.layers.length; i < l; i++) {
+    if(this.layers.getAt(i).index === index) {
+      return this.layers.getAt(i);
+    }
+  }
+  return null;
+};
+
 Level.prototype.loadFrom = function(dataString, path) {
   this.data = g.NWTools.parseNWDataString(dataString);
   this.path = path;

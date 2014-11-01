@@ -28,14 +28,22 @@ Crude Roadmap (WIP)
 "Working?" = "Implemented, but possibly has remaining bugs and broken functionality"
 
 ### 0.1.0
-* [Working?] Simple (but working) level loading and saving. (No layers/signs/npcs/links yet)
+* [Working?] Simple (but working) level loading and saving. (No tilesets/layers/signs/npcs/links yet)
 * [WIP] Basic UI working
+ * [Working?] Tile Selection & Placing
+ * [Working?] Copy/Paste
+ * [ToDo] Cut/Delete
+ * [ToDo] Undo/Redo
 * [WIP] Fix crude bugs
 * [Working?] Ask for Graal folder to load images from there
 * [ToDo] Add proper documentation on how to run it
 
-### 0.1.2
+### 0.1.1
 * UI styling rework to fix issues and make it look better
+ * Fix Bug: Dragging "sticks" if mouse leaves canvas while dragging
+
+### 0.1.3
+* Proper tileset support
 
 ### 0.1.5
 * Links and signs reading from file, display, and saving to file
