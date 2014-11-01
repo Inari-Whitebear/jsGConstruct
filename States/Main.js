@@ -32,11 +32,14 @@ g.States.Main = {
     this.keyCaptures.c.onUp.add(this.onKeyCopy, this);
     this.keyCaptures.v = this.game.input.keyboard.addKey(Phaser.Keyboard.V);
     this.keyCaptures.v.onUp.add(this.onKeyPaste, this);
+    this.keyCaptures.x = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
+    this.keyCaptures.x.onUp.add(this.onKeyCut, this);
 
     this.keyCaptures.del = this.game.input.keyboard.addKey(Phaser.Keyboard.DELETE);
     this.keyCaptures.del.onUp.add(this.onKeyDeleteTiles, this);
 
     this.clipboardTileArray = [];
+    this.clipboardImage = new Phaser.BitmapData(this.game, "clipboardImage", 1, 1);
 
     this.levelSelection = new g.Prefabs.SelectionCanvas(this.game, this.game.world, "levelSelection", 64 * 16, 64 * 16);
 
@@ -54,6 +57,21 @@ g.States.Main = {
     $("#menu_delete").click(function() {
       self.onDeleteTiles();
     });
+
+    $("#menu_cut").click(function() {
+      self.onCut();
+    });
+  },
+
+  onKeyCut: function() {
+    if (!this.keyCaptures.x.altKey && !this.keyCaptures.x.shiftKey && this.keyCaptures.x.ctrlKey) {
+      this.onCut();
+    }
+  },
+
+  onCut: function() {
+    this.onCopy();
+    this.onDeleteTiles();
   },
 
   onKeyCopy: function() {
@@ -73,9 +91,14 @@ g.States.Main = {
     for (var tX = 0; tX < this.levelSelection.selectionRect.w; tX++) {
       this.clipboardTileArray[tX] = [];
       for (var tY = 0; tY < this.levelSelection.selectionRect.h; tY++) {
-        this.clipboardTileArray[tX][tY] = this.openLevel.tileMap.getTile(tX + this.levelSelection.selectionRect.x, tY + this.levelSelection.selectionRect.y, this.activeLayer, true);
+        this.clipboardTileArray[tX][tY] = this.openLevel.tileMap.getTile(tX + this.levelSelection.selectionRect.x, tY + this.levelSelection.selectionRect.y, this.activeLayer, true).index;
       }
     }
+
+    var sourceRect = this.levelSelection.selectionRect;
+    this.clipboardImage.clear();
+    this.clipboardImage.resize(sourceRect.w * 16, sourceRect.h * 16);
+    this.clipboardImage.copy(this.openLevel.getLayerByIndex(this.activeLayer).canvas, sourceRect.x * 16, sourceRect.y * 16, sourceRect.w * 16, sourceRect.h * 16, 0, 0);
   },
 
   onKeyPaste: function() {
@@ -85,12 +108,12 @@ g.States.Main = {
   },
 
   onPaste: function() {
-    if (this.levelSelection.selectionRect.w === 0 || this.levelSelection.selectionRect.h === 0) {
+    if (this.clipboardTileArray.length === 0 || this.clipboardTileArray[0].length === 0) {
       return;
     }
     if (this.openLevel == null) { return; }
 
-    this.updateLevelTilePlacing(this.levelSelection.selectionRect, this.openLevel.getLayerByIndex(this.activeLayer).canvas);
+    this.updateLevelTilePlacing({x: 0, y: 0, w: this.clipboardImage.width / 16, h: this.clipboardImage.height / 16}, this.clipboardImage);
     this.setMode("paste");
   },
 

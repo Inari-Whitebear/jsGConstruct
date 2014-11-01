@@ -12,7 +12,7 @@ Features
 --------
 
 ### Working
-* Simple saving/loading (need to check if layers don't break!)
+* Simple saving/loading (need to check if layers don't break it!)
 * Creating new levels
 * Very Basic UI and UI interaction
 
@@ -22,8 +22,8 @@ Features
 * Documentation
 * Someday scripts?
 
-Crude Roadmap (WIP)
--------------------
+Roadmap (WIP)
+-------------
 
 "Working?" = "Implemented, but possibly has remaining bugs and broken functionality"
 
@@ -31,8 +31,7 @@ Crude Roadmap (WIP)
 * [Working?] Simple (but working) level loading and saving. (No tilesets/layers/signs/npcs/links yet)
 * [WIP] Basic UI working
  * [Working?] Tile Selection & Placing
- * [Working?] Copy/Paste
- * [ToDo] Cut
+ * [Working?] Copy/Paste/Cut
  * [Working?] Delete
  * [ToDo] Undo/Redo
 * [WIP] Fix crude bugs
