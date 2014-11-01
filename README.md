@@ -1,7 +1,7 @@
 jsGConstruct
 ============
 An unofficial level editor for the online-game Graal Online (http://www.graalonline.com).  
-**Version 0.0.7**
+**Version 0.0.8**
 
 Running
 -------
