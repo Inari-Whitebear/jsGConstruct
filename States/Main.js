@@ -63,6 +63,16 @@ g.States.Main = {
     });
   },
 
+  doUndo: function() {
+    if (this.openLevel == null) { return; }
+    this.openLevel.historyManager.doUndo();
+  },
+
+  doRedo: function() {
+    if (this.openLevel == null) { return; }
+    this.openLevel.historyManager.doRedo();
+  },
+
   onKeyCut: function() {
     if (!this.keyCaptures.x.altKey && !this.keyCaptures.x.shiftKey && this.keyCaptures.x.ctrlKey) {
       this.onCut();

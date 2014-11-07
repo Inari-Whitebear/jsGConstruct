@@ -106,4 +106,12 @@ Manager.prototype.openLevel = function(path) {
   tab.click();
 };
 
+Manager.prototype.doUndo = function() {
+  g.States.Main.doUndo();
+};
+
+Manager.prototype.doRedo = function() {
+  g.States.Main.doRedo();
+};
+
 module.exports = Manager;

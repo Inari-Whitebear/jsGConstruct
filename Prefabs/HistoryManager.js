@@ -2,22 +2,22 @@
 
 var g = window.g;
 
-function HistoryManager(game, saveAmount) {
+function HistoryManager(game, level, saveAmount) {
   this.game = game;
+  this.level = level;
 
   this.saveAmount = saveAmount;
   this.savedSteps = [];
   this.stepIndex = 0;
 }
 
-HistoryManager.prototype.saveStep = function(level, x, y, originalArray, newArray, layer) {
+HistoryManager.prototype.saveStep = function(x, y, originalArray, newArray, layer) {
   var stepInfo = {
     x: x,
     y: y,
     tileArrayNew: newArray,
     tileArrayOriginal: originalArray,
-    layer: layer,
-    level: level
+    layer: layer
   };
 
   if (this.stepIndex !== 0) {
@@ -31,7 +31,7 @@ HistoryManager.prototype.saveStep = function(level, x, y, originalArray, newArra
 
 HistoryManager.prototype.doUndo = function() {
   if (this.stepIndex < this.savedSteps.length) {
-    g.HistoryHelper.revertStep(this.savedSteps[this.stepIndex]);
+    this.level.revertStep(this.savedSteps[this.stepIndex]);
     this.stepIndex++;
   }
 };
@@ -39,7 +39,7 @@ HistoryManager.prototype.doUndo = function() {
 HistoryManager.prototype.doRedo = function() {
   if (this.stepIndex > 0) {
     this.stepIndex--;
-    g.HistoryHelper.applyStep(this.savedSteps[this.stepIndex]);
+    this.level.applyStep(this.savedSteps[this.stepIndex]);
   }
 };
 

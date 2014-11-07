@@ -31,6 +31,8 @@ function Level(game, levelName, data, width, height) {
 
   this.tileMap.setPreventRecalculate(true);
 
+  this.historyManager = new g.Prefabs.HistoryManager(game, this, 20);
+
   if (data != null) {
     this.loadFrom(data, levelName);
   } else {
@@ -102,7 +104,7 @@ Level.prototype.placeTiles = function(x, y, tileArray, layer, noHistory) {
   }
 
   if(!noHistory) {
-    g.historyManager.saveStep(this, x, y, org, tileArray, layer);
+    this.historyManager.saveStep(x, y, org, tileArray, layer);
   }
 
   this.unsaved = true;
