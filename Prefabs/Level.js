@@ -89,12 +89,22 @@ Level.prototype.show = function() {
   }
 };
 
-Level.prototype.placeTiles = function(x, y, tileArray, layer) {
+Level.prototype.placeTiles = function(x, y, tileArray, layer, noHistory) {
+  if (noHistory == null) { noHistory = false; }
+  var org = [];
+
   for (var tX = 0, tXL = tileArray.length; tX < tXL; tX++) {
+    org[tX] = [];
     for (var tY = 0, tYL = tileArray[0].length; tY < tYL; tY++) {
+      org[tX][tY] = this.tileMap.getTile(tX + x, tY + y, layer, true).index;
       this.tileMap.putTile(tileArray[tX][tY], tX + x, tY + y, layer);
     }
   }
+
+  if(!noHistory) {
+    g.historyManager.saveStep(this, x, y, org, tileArray, layer);
+  }
+
   this.unsaved = true;
   g.manager.updateTab(this);
 };
@@ -118,7 +128,15 @@ Level.prototype.floodFill = function(x, y, tile, layer, fillIndex) {
       }
     }
   }
-}
+};
+
+Level.prototype.applyStep = function(stepInfo) {
+  this.placeTiles(stepInfo.x, stepInfo.y, stepInfo.tileArrayNew, stepInfo.layer, true);
+};
+
+Level.prototype.revertStep = function(stepInfo) {
+  this.placeTiles(stepInfo.x, stepInfo.y, stepInfo.tileArrayOriginal, stepInfo.layer, true);
+};
 
 Level.prototype.clearArea = function(x, y, w, h, layer) {
   var tile = -1;

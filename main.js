@@ -61,6 +61,14 @@ $("document").ready(function () {
     $("#about_dialog").dialog({});
   });
 
+  $("#menu_undo").click(function() {
+    g.historyManager.doUndo();
+  });
+
+  $("#menu_redo").click(function() {
+    g.historyManager.doRedo();
+  });
+
   $("#menu_close").click(fileClose);
 
   var side_tabs = $("#side_tabs").scrollTabs({
@@ -133,9 +141,11 @@ $("document").ready(function () {
 require("./States/load.js")(game);
 require("./Prefabs/load.js");
 require("./Libs/NWTools.js");
+require("./Libs/HistoryHelper.js");
 
 g.manager = new g.Prefabs.Manager(game);
 g.fileManager = new g.Prefabs.FileManager(game);
+g.historyManager = new g.Prefabs.HistoryManager(game, 20);
 g.game = game;
 
 game.state.start("Startup");

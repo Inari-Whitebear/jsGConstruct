@@ -1,7 +1,7 @@
 jsGConstruct
 ============
 An unofficial level editor for the online-game Graal Online (http://www.graalonline.com).  
-**Version 0.0.8**
+**Version 0.0.9**
 
 Running
 -------
@@ -33,7 +33,7 @@ Roadmap (WIP)
  * [Working?] Tile Selection & Placing
  * [Working?] Copy/Paste/Cut
  * [Working?] Delete
- * [ToDo] Undo/Redo
+ * [WIP] Undo/Redo
  * [WIP] Toolbar
 * [WIP] Fix crude bugs
 * [Working?] Ask for Graal folder to load images from there

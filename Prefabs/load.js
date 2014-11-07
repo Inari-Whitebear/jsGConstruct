@@ -9,3 +9,4 @@ g.Prefabs.NormRect = require("./NormRect.js");
 g.Prefabs.FileManager = require("./FileManager.js");
 g.Prefabs.TileSelection = require("./TileSelection.js");
 g.Prefabs.SelectionCanvas = require("./SelectionCanvas.js");
+g.Prefabs.HistoryManager = require("./HistoryManager.js");
