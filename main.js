@@ -100,6 +100,31 @@ $("document").ready(function () {
   }
 
   g.graalFolder = graalFolder[0];
+
+  $("#toolbar_new").button({
+    icons: {
+      primary: "ui-icon-document"
+    },
+    text: false
+  });
+  $("#toolbar_open").button({
+    icons: {
+      primary: "ui-icon-folder-open"
+    },
+    text: false
+  });
+  $("#toolbar_save").button({
+    icons: {
+      primary: "ui-icon-disk"
+    },
+    text: false
+  });
+  $("#toolbar_close").button({
+    icons: {
+      primary: "ui-icon-folder-collapsed"
+    },
+    text: false
+  });      
 });
 
 require("./States/load.js")(game);

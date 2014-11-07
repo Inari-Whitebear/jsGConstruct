@@ -34,6 +34,7 @@ Roadmap (WIP)
  * [Working?] Copy/Paste/Cut
  * [Working?] Delete
  * [ToDo] Undo/Redo
+ * [WIP] Toolbar
 * [WIP] Fix crude bugs
 * [Working?] Ask for Graal folder to load images from there
 * [ToDo] Add proper documentation on how to run it
@@ -41,7 +42,6 @@ Roadmap (WIP)
 ### 0.1.1
 * UI styling rework to fix issues and make it look better
  * Fix Bug: Dragging "sticks" if mouse leaves canvas while dragging
- * Toolbar
 
 ### 0.1.3
 * Proper tileset support
