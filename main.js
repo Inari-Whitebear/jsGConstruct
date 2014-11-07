@@ -27,38 +27,41 @@ $("document").ready(function () {
     click_callback: g.manager.tabClicked
   });
 
-  var menu = $("#main_menu").jMenu();
-  $("#menu_open").click(function() {
+  var fileNew = function() {
+    g.manager.newLevel();
+  };
+
+  var fileOpen = function() {
     var files = ipc.sendSync("openFile");
     if(files != null) {
       g.manager.openLevel(files[0]);
     }
-  });
+  };
 
+  var fileSave = function() {
+    g.manager.saveLevel();
+  };
+
+  var fileClose = function() {
+    g.manager.closeLevel();
+  };
+
+  var menu = $("#main_menu").jMenu();
+  $("#menu_open").click(fileOpen);  
   $("#menu_exit").click(function() {
     ipc.sendSync("close");
   });
-
-  $("#menu_new").click(function() {
-    g.manager.newLevel();
-  });
-
-  $("#menu_save").click(function() {
-    g.manager.saveLevel();
-  });
-
+  $("#menu_new").click(fileNew);
+  $("#menu_save").click(fileSave);
   $("#menu_saveAs").click(function() {
     g.manager.saveLevel(null, true);
   });
-
 
   $("#menu_about").click(function() {
     $("#about_dialog").dialog({});
   });
 
-  $("#menu_close").click(function() {
-    g.manager.closeLevel();
-  });
+  $("#menu_close").click(fileClose);
 
   var side_tabs = $("#side_tabs").scrollTabs({
     click_callback: function(e) {
@@ -106,25 +109,25 @@ $("document").ready(function () {
       primary: "ui-icon-document"
     },
     text: false
-  });
+  }).click(fileNew);
   $("#toolbar_open").button({
     icons: {
       primary: "ui-icon-folder-open"
     },
     text: false
-  });
+  }).click(fileOpen);
   $("#toolbar_save").button({
     icons: {
       primary: "ui-icon-disk"
     },
     text: false
-  });
+  }).click(fileSave);
   $("#toolbar_close").button({
     icons: {
       primary: "ui-icon-folder-collapsed"
     },
     text: false
-  });      
+  }).click(fileClose);      
 });
 
 require("./States/load.js")(game);
