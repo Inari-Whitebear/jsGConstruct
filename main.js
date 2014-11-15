@@ -6,9 +6,9 @@ require("./boot.js");
 window.$ = window.jQuery = require("./Libs/jQueryUI/external/jquery/jquery.js");
 window.jQueryUI = require("./Libs/jQueryUI/jquery-ui.js");
 require("./Libs/jQueryUI/layout/jquery.layout.js");
-require("./Libs/jQueryUI/jMenu/jMenu.jquery.js");
 require("./Libs/jQuery-ScrollTabs/js/jquery.scrolltabs.js");
 require("./Libs/jQuery-ScrollTabs/js/jquery.mousewheel.js");
+require("./Libs/Bootstrap/bootstrap.js");
 
 var g = window.g;
 
@@ -46,7 +46,6 @@ $("document").ready(function () {
     g.manager.closeLevel();
   };
 
-  var menu = $("#main_menu").jMenu();
   $("#menu_open").click(fileOpen);  
   $("#menu_exit").click(function() {
     ipc.sendSync("close");

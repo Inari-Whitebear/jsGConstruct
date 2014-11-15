@@ -2,8 +2,9 @@
 <head>
 	<title>JS Gonstruct</title>
 	<link href="Libs/jQueryUI/jquery-ui.css" rel="stylesheet">
-	<link href="Libs/jQueryUI/jMenu/jmenu.css" rel="stylesheet">
 	<link href="Libs/jQuery-ScrollTabs/css/scrolltabs.css" rel="stylesheet">
+	<link href="Libs/Bootstrap/bootstrap.css" rel="stylesheet">
+	<link href="Libs/Bootstrap/bootstrap-theme.css" rel="stylesheet">
 	<style>
 		.ui-layout-center {
 			padding: 0px !important;
@@ -24,6 +25,9 @@
 		.ui-icon {
         	zoom: 1.35;
 		}
+		.navbar-nav > li > a {padding-top:5px !important; padding-bottom:5px !important;}
+		.navbar {min-height:10px !important}
+		.navbar {margin-bottom:0px !important;}
 	</style>
 
 	<script src="phaser.js"></script>
@@ -33,46 +37,51 @@
 <body>
 <div id="level_render" class="ui-layout-center" style="margin:0px; !important"></div>
 <div class="ui-layout-north">
-	<div style="background-color:#e3e3e3;">
-	    <ul id="main_menu">
-	        <li><a>File</a>
-	        	<ul>
-	        		<li id="menu_new"><a>New</a></li>
-	        		<li id="menu_open"><a>Open</a></li>
-	        		<li id="menu_save"><a>Save</a></li>
-	        		<li id="menu_saveAs"><a>Save As...</a></li>
-	        		<li id="menu_close"><a>Close</a></li>
-	        		<li id="menu_exit"><a>Exit</a></li>
-	        	</ul>
-	        </li>
-	        <li><a>Edit</a>
-	        	<ul>
-	        		<li id="menu_undo"><a>Undo</a></li>
-	        		<li id="menu_redo"><a>Redo</a></li>
-	        		<li id="menu_cut"><a>Cut</a></li>
-	        		<li id="menu_copy"><a>Copy</a></li>
-	        		<li id="menu_paste"><a>Paste</a></li>
-	        		<li id="menu_delete"><a>Delete</a></li>
-	        	</ul>
-	        </li>
-	        <li><a>Level</a>
-	        	<ul>
-	        		<li><a>Create Link</a></li>
-	        		<li><a>Links</a></li>
-	        		<li><a>Signs</a></li>
-	        		<li><a>NPCs</a></li>
-	        		<li><a>Tilesets</a></li>
-	        		<li><a>Execute</a></li>
-	        		<li><a>Screenshot</a></li>
-	        	</ul>
-	        </li>
-	        <li><a>Help</a>
-	        	<ul>
-	        		<li id="menu_about"><a>About</a></li>
-	        	</ul>
-	        </li>
-	    </ul>
-	</div>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+		    <ul class="nav navbar-nav" id="main_menu">
+		        <li class="dropdown"><a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown">File</a>
+		        	<ul class="dropdown-menu" role="menu">
+		        		<li id="menu_new"><a>New</a></li>
+		        		<li id="menu_open"><a>Open</a></li>
+		        		<li id="menu_save"><a>Save</a></li>
+		        		<li id="menu_saveAs"><a>Save As...</a></li>
+		        		<li id="menu_close"><a>Close</a></li>
+		        		<li class="divider"></li>
+		        		<li id="menu_exit"><a>Exit</a></li>
+		        	</ul>
+		        </li>
+		        <li class="dropdown"><a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown">Edit</a>
+		        	<ul class="dropdown-menu" role="menu">
+		        		<li id="menu_undo"><a>Undo</a></li>
+		        		<li id="menu_redo"><a>Redo</a></li>
+		        		<li class="divider"></li>
+		        		<li id="menu_cut"><a>Cut</a></li>
+		        		<li id="menu_copy"><a>Copy</a></li>
+		        		<li id="menu_paste"><a>Paste</a></li>
+		        		<li id="menu_delete"><a>Delete</a></li>
+		        	</ul>
+		        </li>
+		        <li class="dropdown"><a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown">Level</a>
+		        	<ul class="dropdown-menu" role="menu">
+		        		<li><a>Create Link</a></li>
+		        		<li><a>Links</a></li>
+		        		<li><a>Signs</a></li>
+		        		<li><a>NPCs</a></li>
+		        		<li><a>Tilesets</a></li>
+		        		<li class="divider"></li>
+		        		<li><a>Execute</a></li>
+		        		<li><a>Screenshot</a></li>
+		        	</ul>
+		        </li>
+		        <li class="dropdown"><a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown">Help</a>
+		        	<ul class="dropdown-menu" role="menu">
+		        		<li id="menu_about"><a>About</a></li>
+		        	</ul>
+		        </li>
+		    </ul>
+	    </div>
+	</nav>
 	<div id="main_toolbar" class="ui-widget-header ui-corner-all">
 		<button id="toolbar_new">New</button>
 		<button id="toolbar_open">Open</button>
