@@ -2,7 +2,6 @@
 <head>
 	<title>JS Gonstruct</title>
 	<link href="Libs/jQueryUI/jquery-ui.css" rel="stylesheet">
-	<link href="Libs/jQuery-ScrollTabs/css/scrolltabs.css" rel="stylesheet">
 	<link href="Libs/Bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="Libs/Bootstrap/css/bootstrap-theme.css" rel="stylesheet">
 	<style>
@@ -17,13 +16,9 @@
 		.ui-layout-east {
 			padding: 0px !important;
 		}
-		body{font-size:14px;}
 		#side_tabs, #level_tabs {
 			padding: 0px;
 			background-color:#dadada;
-		}
-		.ui-icon {
-        	zoom: 1.35;
 		}
 		.navbar-nav > li > a {padding-top:5px !important; padding-bottom:5px !important;}
 		.navbar {min-height:10px !important;}
@@ -105,11 +100,11 @@
 </div>
 <div class="ui-layout-south">South</div>
 <div class="ui-layout-east" style="overflow:hidden;">
-	<div id="side_tabs" class="scroll_tabs_theme_smooth">
-		<span id="side_tabs_tiles">Tiles</span>
-		<span>NPCs</span>
-		<span>Predefined</span>
-	</div>
+	<ul id="side_tabs" class="nav nav-tabs">
+		<li role="presentation" id="side_tabs_tiles" class="active"><a role="tab" href="#">Tiles</a></li>
+		<li role="presentation" ><a role="tab" href="#">NPCs</a></li>
+		<li role="presentation" ><a role="tab" href="#">Predefined</a></li>
+	</ul>
 	<div style="overflow:scroll; position: relative; top 0px; left: 0px;" id="tab_tile_render">
 	<img draggable="false" style="width: 2048px; height:512px;" id="tile_render"></div>
 	</div>
