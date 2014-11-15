@@ -6,8 +6,6 @@ require("./boot.js");
 window.$ = window.jQuery = require("./Libs/jQueryUI/external/jquery/jquery.js");
 window.jQueryUI = require("./Libs/jQueryUI/jquery-ui.js");
 require("./Libs/jQueryUI/layout/jquery.layout.js");
-require("./Libs/jQuery-ScrollTabs/js/jquery.scrolltabs.js");
-require("./Libs/jQuery-ScrollTabs/js/jquery.mousewheel.js");
 require("./Libs/Bootstrap/bootstrap.js");
 
 var g = window.g;
@@ -20,13 +18,8 @@ g.tileHeight = 16;
 var game = new Phaser.Game(g.levelWidth * g.tileWidth, g.levelHeight * g.tileHeight, Phaser.CANVAS, "level_render");
 var layout;
 var ipc = require("ipc");
-//var tabs;
 
 $("document").ready(function () {
-  /*g.manager.tabs = $("#level_tabs").scrollTabs({
-    click_callback: g.manager.tabClicked
-  });*/
-
   var fileNew = function() {
     g.manager.newLevel();
   };
@@ -70,20 +63,7 @@ $("document").ready(function () {
 
   $("#menu_close").click(fileClose);
 
-  var side_tabs = $("#side_tabs").scrollTabs({
-    click_callback: function(e) {
-      switch(e.target.innerText) {
-        case "Tiles":
-          //$("#tile_render").show();
-        break;
-        default:
-          //$("#tile_render").hide();
-        break;
-      }
-    }
-  });
-
-  $("#side_tabs_tiles").click();
+  //$("#side_tabs_tiles").click();
 
   layout = $("body").layout( {
     defaults: {
