@@ -85,8 +85,9 @@ Manager.prototype.updateTab = function(level) {
       break;
     }
   }
-  var tab = $(this.tabs.domObject).find("[tabid=\"" + this.files[i].tabid + "\"]");
-  tab.text(level.levelName + (level.unsaved ? " *" : ""));
+
+  var tab = $("#level_tabs #" + this.files[i].tabid);
+  tab.children("a").text(level.levelName + (level.unsaved ? " *" : ""));
 }
 
 Manager.prototype.openLevel = function(path) {
