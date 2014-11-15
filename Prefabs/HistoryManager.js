@@ -27,6 +27,7 @@ HistoryManager.prototype.saveStep = function(x, y, originalArray, newArray, laye
 
   this.savedSteps.unshift(stepInfo);
   this.cullSteps();
+  g.uiManager.enableUndo();
 };
 
 HistoryManager.prototype.doUndo = function() {

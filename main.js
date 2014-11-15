@@ -103,6 +103,7 @@ require("./Libs/NWTools.js");
 
 g.manager = new g.Prefabs.Manager(game);
 g.fileManager = new g.Prefabs.FileManager(game);
+g.uiManager = new g.Prefabs.UIManager(game);
 g.game = game;
 
 game.state.start("Startup");

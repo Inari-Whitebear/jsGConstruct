@@ -10,3 +10,4 @@ g.Prefabs.FileManager = require("./FileManager.js");
 g.Prefabs.TileSelection = require("./TileSelection.js");
 g.Prefabs.SelectionCanvas = require("./SelectionCanvas.js");
 g.Prefabs.HistoryManager = require("./HistoryManager.js");
+g.Prefabs.UIManager = require("./UIManager.js");
