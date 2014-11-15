@@ -27,13 +27,28 @@ HistoryManager.prototype.saveStep = function(x, y, originalArray, newArray, laye
 
   this.savedSteps.unshift(stepInfo);
   this.cullSteps();
-  g.uiManager.enableUndo();
+  this.updateUndoRedo();
 };
+
+HistoryManager.prototype.updateUndoRedo = function() {
+  if (this.savedSteps.length === 0 || this.stepIndex === this.savedSteps.length) {
+    g.uiManager.disableUndo();
+  } else {
+    g.uiManager.enableUndo();
+  }
+
+  if (this.savedSteps.length === 0 || this.stepIndex === 0) {
+    g.uiManager.disableRedo();
+  } else {
+    g.uiManager.enableRedo();
+  }
+}
 
 HistoryManager.prototype.doUndo = function() {
   if (this.stepIndex < this.savedSteps.length) {
     this.level.revertStep(this.savedSteps[this.stepIndex]);
     this.stepIndex++;
+    this.updateUndoRedo();
   }
 };
 
@@ -41,6 +56,7 @@ HistoryManager.prototype.doRedo = function() {
   if (this.stepIndex > 0) {
     this.stepIndex--;
     this.level.applyStep(this.savedSteps[this.stepIndex]);
+    this.updateUndoRedo();
   }
 };
 
