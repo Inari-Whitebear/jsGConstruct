@@ -17,10 +17,9 @@ Manager.prototype.newLevel = function() {
   this.files.push({tabid: this.maxID, level: level});
 
   level.create();
-  this.tabs.addTab("<span tabid=\""+this.maxID+"\">unnamed</span>");
-  var tab = $(this.tabs.domObject).find("[tabid=\""+this.maxID+"\"]");
+  var tab = this.addTab(this.maxID, "unnamed");
   this.maxID++;
-  tab.click();
+  tab.children("a").click();
 };
 
 Manager.prototype.closeLevel = function(level) {
@@ -32,7 +31,8 @@ Manager.prototype.closeLevel = function(level) {
 
   for (var i = 0, l = this.files.length; i < l; i++) {
     if (this.files[i].level == level) {
-      this.tabs.removeTabs("[tabid=\"" + this.files[i].tabid + "\"]");
+      //this.tabs.removeTabs("[tabid=\"" + this.files[i].tabid + "\"]");
+      this.removeTab(this.files[i].tabid);
       break;
     }
   }
@@ -70,10 +70,6 @@ Manager.prototype.saveLevel = function(level, forceChoice) {
   this.updateTab(level);
 };
 
-Manager.prototype.tabClicked = function(event) {
-  g.manager.setSelectedTab($(event.target).attr("tabid"));
-};
-
 Manager.prototype.setSelectedTab = function(tabid) {
   this.selectedTab = Number(tabid);
   for (var i = 0, l = this.files.length; i < l; i++) {
@@ -100,10 +96,9 @@ Manager.prototype.openLevel = function(path) {
   this.files.push({tabid: this.maxID, level: level});
 
   level.create();
-  this.tabs.addTab("<span tabid=\"" + this.maxID + "\">" + level.levelName + "</span>");
-  var tab = $(this.tabs.domObject).find("[tabid=\"" + this.maxID + "\"]");
+  var tab = this.addTab(this.maxID, level.levelName);
   this.maxID++;
-  tab.click();
+  tab.children("a").click();
 };
 
 Manager.prototype.doUndo = function() {
@@ -113,5 +108,21 @@ Manager.prototype.doUndo = function() {
 Manager.prototype.doRedo = function() {
   g.States.Main.doRedo();
 };
+
+Manager.prototype.addTab = function(tabID, tabName) {
+  var tab = $("<li role=\"presentation\" id=\""+tabID+"\"></li>").append("<a role=\"tab\" href=\"#\">" + tabName + "</a>");
+  var self = this;
+  tab.children("a").click(function(e) {
+    e.preventDefault();
+    $(this).tab("show");
+    self.setSelectedTab(($(this).parent().attr("id")));
+  });  
+  $("#level_tabs").append(tab);
+  return tab;
+};
+
+Manager.prototype.removeTab = function(tabID) {
+  $("#level_tabs #"+tabID).detach();
+}
 
 module.exports = Manager;

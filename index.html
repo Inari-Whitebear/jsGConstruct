@@ -26,8 +26,12 @@
         	zoom: 1.35;
 		}
 		.navbar-nav > li > a {padding-top:5px !important; padding-bottom:5px !important;}
-		.navbar {min-height:10px !important}
+		.navbar {min-height:10px !important;}
 		.navbar {margin-bottom:0px !important;}
+		.nav-tabs {min-height:30px;}
+		.nav-tabs li a {padding-top:5px !important; padding-bottom:5px !important;}
+		.nav-tabs li a {text-decoration:none; color:#000;}
+		
 	</style>
 
 	<script src="phaser.js"></script>
@@ -96,8 +100,8 @@
 			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 		</button>
 	</div>
-	<div id="level_tabs" class="scroll_tabs_theme_smooth">
-	</div>
+	<ul id="level_tabs" class="nav nav-tabs">
+	</ul>
 </div>
 <div class="ui-layout-south">South</div>
 <div class="ui-layout-east" style="overflow:hidden;">

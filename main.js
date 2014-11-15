@@ -23,9 +23,9 @@ var ipc = require("ipc");
 //var tabs;
 
 $("document").ready(function () {
-  g.manager.tabs = $("#level_tabs").scrollTabs({
+  /*g.manager.tabs = $("#level_tabs").scrollTabs({
     click_callback: g.manager.tabClicked
-  });
+  });*/
 
   var fileNew = function() {
     g.manager.newLevel();
