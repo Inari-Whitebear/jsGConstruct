@@ -3,8 +3,8 @@
 	<title>JS Gonstruct</title>
 	<link href="Libs/jQueryUI/jquery-ui.css" rel="stylesheet">
 	<link href="Libs/jQuery-ScrollTabs/css/scrolltabs.css" rel="stylesheet">
-	<link href="Libs/Bootstrap/bootstrap.css" rel="stylesheet">
-	<link href="Libs/Bootstrap/bootstrap-theme.css" rel="stylesheet">
+	<link href="Libs/Bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="Libs/Bootstrap/css/bootstrap-theme.css" rel="stylesheet">
 	<style>
 		.ui-layout-center {
 			padding: 0px !important;
@@ -82,11 +82,19 @@
 		    </ul>
 	    </div>
 	</nav>
-	<div id="main_toolbar" class="ui-widget-header ui-corner-all">
-		<button id="toolbar_new">New</button>
-		<button id="toolbar_open">Open</button>
-		<button id="toolbar_save">Save</button>
-		<button id="toolbar_close">Close</button>
+	<div id="main_toolbar" role="toolbar" class="btn-group">
+		<button type="button" class="btn btn-default" id="toolbar_new" aria-label="New">
+			<span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+		</button>
+		<button type="button" class="btn btn-default" id="toolbar_open" aria-label="Open">
+			<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+		</button>
+		<button type="button" class="btn btn-default" id="toolbar_save" aria-label="Save">
+			<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+		</button>
+		<button type="button" class="btn btn-default" id="toolbar_close" aria-label="Close">
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
 	</div>
 	<div id="level_tabs" class="scroll_tabs_theme_smooth">
 	</div>

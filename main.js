@@ -111,30 +111,10 @@ $("document").ready(function () {
 
   g.graalFolder = graalFolder[0];
 
-  $("#toolbar_new").button({
-    icons: {
-      primary: "ui-icon-document"
-    },
-    text: false
-  }).click(fileNew);
-  $("#toolbar_open").button({
-    icons: {
-      primary: "ui-icon-folder-open"
-    },
-    text: false
-  }).click(fileOpen);
-  $("#toolbar_save").button({
-    icons: {
-      primary: "ui-icon-disk"
-    },
-    text: false
-  }).click(fileSave);
-  $("#toolbar_close").button({
-    icons: {
-      primary: "ui-icon-folder-collapsed"
-    },
-    text: false
-  }).click(fileClose);      
+  $("#toolbar_new").click(fileNew);
+  $("#toolbar_open").click(fileOpen);
+  $("#toolbar_save").click(fileSave);
+  $("#toolbar_close").click(fileClose);      
 });
 
 require("./States/load.js")(game);
