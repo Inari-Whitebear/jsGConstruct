@@ -4,6 +4,7 @@
 	<link href="Libs/jQueryUI/jquery-ui.css" rel="stylesheet">
 	<link href="Libs/Bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="Libs/Bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+	<link href="Libs/font-awesome/css/font-awesome.css" rel="stylesheet">
 	<style>
 		.ui-layout-center {
 			padding: 0px !important;
@@ -65,6 +66,7 @@
 		        	<ul class="dropdown-menu" role="menu">
 		        		<li><a>Create Link</a></li>
 		        		<li><a>Links</a></li>
+		        		<li class="divider"></li>
 		        		<li><a>Signs</a></li>
 		        		<li><a>NPCs</a></li>
 		        		<li><a>Tilesets</a></li>
@@ -81,7 +83,7 @@
 		    </ul>
 	    </div>
 	</nav>
-	<div id="main_toolbar" role="toolbar" class="btn-group">
+	<div id="main_toolbar_1" role="toolbar" class="btn-group">
 		<button type="button" class="btn btn-default" id="toolbar_new" aria-label="New">
 			<span class="glyphicon glyphicon-file" aria-hidden="true"></span>
 		</button>
@@ -93,6 +95,14 @@
 		</button>
 		<button type="button" class="btn btn-default" id="toolbar_close" aria-label="Close">
 			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
+	</div>
+	<div id="main_toolbar_2" role="toolbar" class="btn-group">
+		<button type="button" class="btn btn-default disabled" id="toolbar_undo" aria-label="Undo">
+			<i class="fa fa-undo" aria-hidden="true"></i>
+		</button>
+		<button type="button" class="btn btn-default disabled" id="toolbar_redo" aria-label="Redo">
+			<i class="fa fa-repeat" aria-hidden="true"></i>
 		</button>
 	</div>
 	<ul id="level_tabs" class="nav nav-tabs">

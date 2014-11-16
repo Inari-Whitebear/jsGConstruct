@@ -39,6 +39,14 @@ $("document").ready(function () {
     g.manager.closeLevel();
   };
 
+  var doUndo = function() {
+    g.manager.doUndo();
+  };
+
+  var doRedo = function() {
+    g.manager.doRedo();
+  };
+
   $("#menu_open").click(fileOpen);  
   $("#menu_exit").click(function() {
     ipc.sendSync("close");
@@ -53,13 +61,11 @@ $("document").ready(function () {
     $("#about_dialog").dialog({});
   });
 
-  $("#menu_undo").click(function() {
-    g.manager.doUndo();
-  });
+  $("#menu_undo").click(doUndo);
+  $("#toolbar_undo").click(doUndo);
 
-  $("#menu_redo").click(function() {
-    g.manager.doRedo();
-  });
+  $("#menu_redo").click(doRedo);
+  $("#toolbar_redo").click(doRedo);
 
   $("#menu_close").click(fileClose);
 
