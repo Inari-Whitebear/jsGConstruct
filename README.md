@@ -43,6 +43,10 @@ Roadmap (WIP)
 * UI styling rework to fix issues and make it look better
  * Fix Bug: Dragging "sticks" if mouse leaves canvas while dragging
 
+### 0.1.2
+* Code rework for better flow
+* Code Documentation
+
 ### 0.1.3
 * Proper tileset support
 
