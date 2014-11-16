@@ -24,4 +24,12 @@ UIManager.prototype.disableRedo = function() {
   $("#toolbar_redo").addClass("disabled");
 }
 
+UIManager.prototype.setEnabled = function(name, enabled) {
+  var func = "addClass";
+  if (enabled) { func = "removeClass"; }
+
+  $("#menu_" + name)[func]("disabled");
+  $("#toolbar_" + name)[func]("disabled");
+};
+
 module.exports = UIManager;

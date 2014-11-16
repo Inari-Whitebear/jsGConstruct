@@ -42,6 +42,7 @@ g.States.Main = {
     this.clipboardImage = new Phaser.BitmapData(this.game, "clipboardImage", 1, 1);
 
     this.levelSelection = new g.Prefabs.SelectionCanvas(this.game, this.game.world, "levelSelection", 64 * 16, 64 * 16);
+    this.levelSelection.onSelected.add(this.levelSelectionChanged, this);
 
     this.setMode("none");
 
@@ -49,10 +50,16 @@ g.States.Main = {
     $("#menu_copy").click(function() {
       self.onCopy();
     });
+    $("#toolbar_copy").click(function() {
+      self.onCopy();
+    });    
 
     $("#menu_paste").click(function() {
       self.onPaste();
     });
+    $("#toolbar_copy").click(function() {
+      self.onCopy();
+    });    
 
     $("#menu_delete").click(function() {
       self.onDeleteTiles();
@@ -61,6 +68,19 @@ g.States.Main = {
     $("#menu_cut").click(function() {
       self.onCut();
     });
+    $("#toolbar_copy").click(function() {
+      self.onCopy();
+    });    
+  },
+
+  levelSelectionChanged: function() {
+    if (this.levelSelection.selectionRect.w > 0 && this.levelSelection.selectionRect.h > 0) {
+      g.uiManager.setEnabled("cut", true);
+      g.uiManager.setEnabled("copy", true);
+    } else {
+      g.uiManager.setEnabled("cut", false);
+      g.uiManager.setEnabled("copy", false);
+    }
   },
 
   doUndo: function() {
@@ -95,6 +115,7 @@ g.States.Main = {
 
     if (this.openLevel == null) { return; }
     if (this.levelSelection.selectionRect.w === 0 || this.levelSelection.selectionRect.h === 0) {
+      g.uiManager.setEnabled("paste", false);
       return;
     }
 
@@ -104,6 +125,8 @@ g.States.Main = {
         this.clipboardTileArray[tX][tY] = this.openLevel.tileMap.getTile(tX + this.levelSelection.selectionRect.x, tY + this.levelSelection.selectionRect.y, this.activeLayer, true).index;
       }
     }
+
+    g.uiManager.setEnabled("paste", true);
 
     var sourceRect = this.levelSelection.selectionRect;
     this.clipboardImage.clear();
@@ -154,8 +177,10 @@ g.States.Main = {
   },
 
   tileSelectionChanged: function() {
-    this.updateLevelTilePlacing(this.tileSelection.selectionCanvas.selectionRect, this.tileSelection.tileset);
-    this.setMode("placing");
+    if (this.tileSelection.selectionCanvas.selectionRect.w > 0 && this.tileSelection.selectionCanvas.selectionRect.h > 0) {
+      this.updateLevelTilePlacing(this.tileSelection.selectionCanvas.selectionRect, this.tileSelection.tileset);
+      this.setMode("placing");
+    }
   },
 
   setOpenLevel: function(level) {
@@ -215,6 +240,8 @@ g.States.Main = {
       case "placing":
         this.levelTilePlacingImage.visible = true;
         this.levelSelection.disable(true);
+        g.uiManager.setEnabled("cut", false);
+        g.uiManager.setEnabled("copy", false);
         break;
       case "none":
         this.levelTilePlacingImage.visible = false;
