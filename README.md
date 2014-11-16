@@ -38,6 +38,7 @@ Roadmap (WIP)
 * [WIP] Fix crude bugs
 * [Working?] Ask for Graal folder to load images from there
 * [ToDo] Add proper documentation on how to run it
+* [ToDo] First packaged release
 
 ### 0.1.1
 * UI styling rework to fix issues and make it look better
