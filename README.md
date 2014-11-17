@@ -46,6 +46,7 @@ Roadmap (WIP)
 
 ### 0.1.2
 * Code rework for better flow
+ * Better error handling (files/images not found, etc)
 * Code Documentation
 
 ### 0.1.3
