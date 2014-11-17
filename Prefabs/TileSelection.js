@@ -52,7 +52,7 @@ TileSelection.prototype.selectionChanged = function() {
   this.updateSelectedTileArray();
 
   this.onSelectionChanged.dispatch();
-}
+};
 
 TileSelection.prototype.destroy = function() {
   this.selectionCanvas.destroy();
@@ -76,7 +76,7 @@ TileSelection.prototype.disable = function(hide) {
     this.canvasOverlay.clear();
     this.tileset.loadTexture("missing");
   }
-}
+};
 
 TileSelection.prototype.update = function() {
   this.selectionCanvas.update();

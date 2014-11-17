@@ -16,6 +16,7 @@
 
 
 "use strict";
+var g = window.g;
 
 function SelectionCanvas(game, parent, key, width, height) {
   this.game = game;
@@ -32,7 +33,7 @@ function SelectionCanvas(game, parent, key, width, height) {
   this.overlayImage = new Phaser.Image(this.game, 0, 0, this.overlay);
   this.overlayImage.inputEnabled = true;
 
-  this._pointer = {x: 0, y: 0};
+  this.pointerBuffer = {x: 0, y: 0};
 
   var downCallback = this.onMouseDown;
   var upCallback = this.onMouseUp;
@@ -44,21 +45,21 @@ function SelectionCanvas(game, parent, key, width, height) {
       var offset = Phaser.Canvas.getOffset(self.overlay.canvas);
       var pointerX = domEvent.clientX - offset.x;
       var pointerY = domEvent.clientY - offset.y;
-      self._pointer.x = pointerX;
-      self._pointer.y = pointerY;
+      self.pointerBuffer.x = pointerX;
+      self.pointerBuffer.y = pointerY;
       callback.call(self, domEvent);
     };
     return mouseHelper;
-  }
+  };
 
   if (this.inPhaser) {
     this.overlayImage.events.onInputDown.add(this.onMouseDown, this);
     this.overlayImage.events.onInputUp.add(this.onMouseUp, this);
   } else {
     var element = window.document.getElementById(this.parent);
-    element.addEventListener("mousedown", domWrapper("mousedown", callbacks["mousedown"]));
-    element.addEventListener("mouseup", domWrapper("mouseup", callbacks["mouseup"]));
-    element.addEventListener("mousemove", domWrapper("mousemove", callbacks["mousemove"]));
+    element.addEventListener("mousedown", domWrapper("mousedown", callbacks.mousedown));
+    element.addEventListener("mouseup", domWrapper("mouseup", callbacks.mouseup));
+    element.addEventListener("mousemove", domWrapper("mousemove", callbacks.mousemove));
   }
 
   if (this.parent != null) {
@@ -95,7 +96,7 @@ SelectionCanvas.prototype.disable = function(hide) {
     this.hide();
     this.overlay.clear();
   }
-}
+};
 
 SelectionCanvas.prototype.enable = function(show) {
   if (show == null) { show = true; }
@@ -104,18 +105,18 @@ SelectionCanvas.prototype.enable = function(show) {
   if (show) {
     this.show();
   }
-}
+};
 
 SelectionCanvas.prototype.hide = function() {
   this.visible = false;
   this.overlay.clear();
   this.overlayImage.visible = false;
-}
+};
 
 SelectionCanvas.prototype.show = function() {
   this.visible = true;
   this.overlayImage.visible = true;
-}
+};
 
 SelectionCanvas.prototype.getPointer = function() {
   var point, pointerX, pointerY;
@@ -124,11 +125,11 @@ SelectionCanvas.prototype.getPointer = function() {
     pointerX = (this.game.input.mousePointer.pageX - point.x);
     pointerY = (this.game.input.mousePointer.pageY - point.y);
   } else {
-    pointerX = this._pointer.x;
-    pointerY = this._pointer.y;
+    pointerX = this.pointerBuffer.x;
+    pointerY = this.pointerBuffer.y;
   }
   return {x: pointerX, y: pointerY};
-}
+};
 
 SelectionCanvas.prototype.onMouseDown = function() {
   if (!this.enabled) { return; }
@@ -154,7 +155,7 @@ SelectionCanvas.prototype.onMouseMove = function() {
 SelectionCanvas.prototype.onMouseUp = function() {
   if (!this.enabled) { return; }
 
-  var pointer = this.getPointer();
+  //var pointer = this.getPointer();
 
   if (this.dragging) {
     this.dragging = false;
@@ -191,7 +192,7 @@ SelectionCanvas.prototype.update = function() {
   if(this.dragging) {
     this.updateDragging();
   }
-}
+};
 
 SelectionCanvas.prototype.render = function() {
   if (this.dirty) {
@@ -223,4 +224,3 @@ SelectionCanvas.prototype.render = function() {
 };
 
 module.exports = SelectionCanvas;
-

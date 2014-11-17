@@ -68,14 +68,14 @@ g.States.Main = {
     });
     $("#toolbar_copy").click(function() {
       self.onCopy();
-    });    
+    });
 
     $("#menu_paste").click(function() {
       self.onPaste();
     });
     $("#toolbar_copy").click(function() {
       self.onCopy();
-    });    
+    });
 
     $("#menu_delete").click(function() {
       self.onDeleteTiles();
@@ -86,7 +86,7 @@ g.States.Main = {
     });
     $("#toolbar_copy").click(function() {
       self.onCopy();
-    });    
+    });
   },
 
   levelSelectionChanged: function() {
@@ -245,7 +245,7 @@ g.States.Main = {
   },
 
   levelMouseUp: function() {
-    var pointerTile = this.getPointerTile();
+    //var pointerTile = this.getPointerTile();
     this.setMode("none");
   },
 

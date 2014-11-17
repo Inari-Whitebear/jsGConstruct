@@ -36,6 +36,4 @@ function NPC(game, x, y, level, image, frame) {
   });
 }
 
-
-
 module.exports = NPC;

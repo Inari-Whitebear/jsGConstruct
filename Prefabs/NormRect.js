@@ -29,7 +29,7 @@ function NormRect(x, y, w, h) {
   this.w = 0;
   this.h = 0;
   this.calcRect();
-};
+}
 
 NormRect.prototype.calcRect = function() {
   if (this.rawRect.w < 0) {
@@ -46,6 +46,6 @@ NormRect.prototype.calcRect = function() {
 
   this.w = Math.abs(this.rawRect.w);
   this.h = Math.abs(this.rawRect.h);
-}
+};
 
 module.exports = NormRect;

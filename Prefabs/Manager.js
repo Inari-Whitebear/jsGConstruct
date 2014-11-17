@@ -47,7 +47,7 @@ Manager.prototype.closeLevel = function(level) {
   if(level == null) { return; }
 
   for (var i = 0, l = this.files.length; i < l; i++) {
-    if (this.files[i].level == level) {
+    if (this.files[i].level === level) {
       //this.tabs.removeTabs("[tabid=\"" + this.files[i].tabid + "\"]");
       this.removeTab(this.files[i].tabid);
       break;
@@ -56,11 +56,11 @@ Manager.prototype.closeLevel = function(level) {
 
   this.files.splice(i, 1);
 
-  if (g.States.Main.openLevel == level) {
+  if (g.States.Main.openLevel === level) {
     if (this.files.length > 0) {
       var newId;
       if (i > 0) {
-        var newId = i - 1;
+        newId = i - 1;
       } else {
         newId = 0;
       }
@@ -98,14 +98,14 @@ Manager.prototype.setSelectedTab = function(tabid) {
 
 Manager.prototype.updateTab = function(level) {
   for (var i = 0, l = this.files.length; i < l; i++) {
-    if(this.files[i].level == level) {
+    if(this.files[i].level === level) {
       break;
     }
   }
 
   var tab = $("#level_tabs #" + this.files[i].tabid);
   tab.children("a").text(level.levelName + (level.unsaved ? " *" : ""));
-}
+};
 
 Manager.prototype.openLevel = function(path) {
   var contents = fs.readFileSync(path, {encoding: "utf8"});
@@ -128,19 +128,19 @@ Manager.prototype.doRedo = function() {
 };
 
 Manager.prototype.addTab = function(tabID, tabName) {
-  var tab = $("<li role=\"presentation\" id=\""+tabID+"\"></li>").append("<a role=\"tab\" href=\"#\">" + tabName + "</a>");
+  var tab = $("<li role=\"presentation\" id=\"" + tabID + "\"></li>").append("<a role=\"tab\" href=\"#\">" + tabName + "</a>");
   var self = this;
   tab.children("a").click(function(e) {
     e.preventDefault();
     $(this).tab("show");
     self.setSelectedTab(($(this).parent().attr("id")));
-  });  
+  });
   $("#level_tabs").append(tab);
   return tab;
 };
 
 Manager.prototype.removeTab = function(tabID) {
-  $("#level_tabs #"+tabID).detach();
-}
+  $("#level_tabs #" + tabID).detach();
+};
 
 module.exports = Manager;

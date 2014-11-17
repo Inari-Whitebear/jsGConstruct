@@ -35,7 +35,7 @@ function Level(game, levelName, data, width, height) {
   this.miscData = ""; // TODO: support everything to make this unnecessary
 
   this.onLoaded = new Phaser.Signal();
-  this.onLoaded.add(this._onLoaded, this);
+  this.onLoaded.add(this.onLoadedSelf, this);
 
   this.data = {};
   this.visible = false;
@@ -97,7 +97,7 @@ Level.prototype.save = function(forceChoice) {
 
   if(this.path !== "") {
     fs.writeFileSync(this.path, g.NWTools.getNWDataString(this), {encoding: "utf8"});
-    this.unsaved = false;  
+    this.unsaved = false;
   }
 };
 
@@ -169,10 +169,10 @@ Level.prototype.hide = function() {
   this.game.world.remove(this.layers);
 };
 
-Level.prototype._onLoaded = function() {
+Level.prototype.onLoadedSelf = function() {
   this.loaded = true;
   if (this.visible) { this.show(); }
-}
+};
 
 Level.prototype.create = function() {
   if (!this.dataLoaded) {

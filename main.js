@@ -64,7 +64,7 @@ $("document").ready(function () {
     g.manager.doRedo();
   };
 
-  $("#menu_open").click(fileOpen);  
+  $("#menu_open").click(fileOpen);
   $("#menu_exit").click(function() {
     ipc.sendSync("close");
   });
@@ -117,7 +117,7 @@ $("document").ready(function () {
   $("#toolbar_new").click(fileNew);
   $("#toolbar_open").click(fileOpen);
   $("#toolbar_save").click(fileSave);
-  $("#toolbar_close").click(fileClose);      
+  $("#toolbar_close").click(fileClose);
 });
 
 require("./States/load.js")(game);

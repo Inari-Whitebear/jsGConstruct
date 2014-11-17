@@ -13,25 +13,27 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-
+"use strict";
 
 var fs = require("fs");
 var nodePath = require("path");
+var g = window.g;
 
 function FileManager(game) {
   this.loadedFiles = {};
   this.loading = {};
   this.game = game;
+  this.create.game = game;
 }
 
 FileManager.prototype.boot = function() {
   this.game.load.onFileComplete.add(this.loaderFileComplete, this);
-}
+};
 
 FileManager.prototype.load = function(name, objectType, callback, thisArg) {
   if (name in this.loadedFiles) {
-    if (this.loadedFiles[name].object == false) {
-      this["create_" + objectType](this.loadedFiles[name].path);
+    if (this.loadedFiles[name].object === false) {
+      this.create[objectType](this.loadedFiles[name].path);
       this.loadedFiles[name].object = true;
       if (!(name in this.loading)) { this.loading[name] = []; }
       this.loading[name].push([callback, thisArg]);
@@ -43,7 +45,7 @@ FileManager.prototype.load = function(name, objectType, callback, thisArg) {
 
   var path = this.search(name);
   if (path != null) {
-    this["create_" + objectType](path);
+    this.create[objectType](path);
     this.loadedFiles[name] = {path: path, loaded: true};
     if (!(name in this.loading)) { this.loading[name] = []; }
     this.loading[name].push([callback, thisArg]);
@@ -55,8 +57,8 @@ FileManager.prototype.search = function(name) {
 
   this.walk(g.graalFolder, function(baseName, fileName, isDirectory) {
     if (!isDirectory) {
-      if (baseName == name) {
-        found = fileName;  
+      if (baseName === name) {
+        found = fileName;
         return true;
       } else {
         if(!(baseName in this.loadedFiles)) {
@@ -94,12 +96,11 @@ FileManager.prototype.walk = function(path, callback) {
     }
   }
   return false;
-}
-
+};
 
 FileManager.prototype.loadImage = function(name, callback, thisArg) {
   this.load(name, "image", callback, thisArg);
-}
+};
 
 FileManager.prototype.loaderFileComplete = function(progress, key, success) {
   if (key in this.loading) {
@@ -110,9 +111,11 @@ FileManager.prototype.loaderFileComplete = function(progress, key, success) {
   }
 };
 
-FileManager.prototype.create_image = function(path) {
+FileManager.prototype.create = {};
+
+FileManager.prototype.create.image = function(path) {
   this.game.load.image(nodePath.basename(path), path);
   this.game.load.start();
-}
+};
 
 module.exports = FileManager;
