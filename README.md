@@ -1,12 +1,22 @@
 jsGConstruct
 ============
 An unofficial level editor for the online-game Graal Online (http://www.graalonline.com).  
-**Version 0.0.9**
+**Version 0.0.9.5**
 
 Running
 -------
-
 (WIP)
+
+### Run with source
+* Download source (e.g. as [ZIP](https://github.com/Inari-Whitebear/jsGConstruct/archive/master.zip))
+* Extract to a folder of your choice
+* Download [Atom-Shell](https://github.com/atom/atom-shell/releases)
+* Run atom-shell with the source-folder as commandline argument
+
+### Run with release (as package)
+* [Download](https://github.com/Inari-Whitebear/jsGConstruct/releases) the package for your OS
+* Extract to a folder of your choice
+* Run Atom-Shell
 
 Features
 --------
@@ -29,16 +39,16 @@ Roadmap (WIP)
 
 ### 0.1.0
 * [Working?] Simple (but working) level loading and saving. (No tilesets/layers/signs/npcs/links yet)
-* [WIP] Basic UI working
+* [Working?] Basic UI working
  * [Working?] Tile Selection & Placing
  * [Working?] Copy/Paste/Cut
  * [Working?] Delete
- * [WIP] Undo/Redo
- * [WIP] Toolbar
+ * [Working?] Undo/Redo
+ * [Working?] Toolbar
 * [WIP] Fix crude bugs
 * [Working?] Ask for Graal folder to load images from there
-* [ToDo] Add proper documentation on how to run it
-* [ToDo] First packaged release
+* [WIP] Add proper documentation on how to run it
+* [WIP] First packaged release
 
 ### 0.1.1
 * UI styling rework to fix issues and make it look better
