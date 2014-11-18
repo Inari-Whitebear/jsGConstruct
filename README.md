@@ -1,7 +1,7 @@
 jsGConstruct
 ============
 An unofficial level editor for the online-game Graal Online (http://www.graalonline.com).  
-**Version 0.0.9.5**
+**Version 0.1.0**
 
 Running
 -------
@@ -16,7 +16,7 @@ Running
 ### Run with release (as package)
 * [Download](https://github.com/Inari-Whitebear/jsGConstruct/releases) the package for your OS
 * Extract to a folder of your choice
-* Run Atom-Shell
+* Run Atom
 
 Features
 --------
@@ -43,10 +43,10 @@ Roadmap (WIP)
  * [Done] Delete
  * [Done] Undo/Redo
  * [Done] Toolbar
-* [WIP] Fix crude bugs
+* [Done] Fix crudest bugs
 * [Done] Ask for Graal folder to load images from there
-* [Testing] Add proper documentation on how to run it
-* [WIP] First packaged release
+* [Done] Add proper documentation on how to run it
+* [Done] First packaged release
 
 ### 0.1.1
 * UI styling rework to fix issues and make it look better
