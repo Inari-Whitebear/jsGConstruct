@@ -35,19 +35,17 @@ Features
 Roadmap (WIP)
 -------------
 
-"Working?" = "Implemented, but possibly has remaining bugs and broken functionality"
-
 ### 0.1.0
-* [Working?] Simple (but working) level loading and saving. (No tilesets/layers/signs/npcs/links yet)
-* [Working?] Basic UI working
- * [Working?] Tile Selection & Placing
- * [Working?] Copy/Paste/Cut
- * [Working?] Delete
- * [Working?] Undo/Redo
- * [Working?] Toolbar
+* [Done] Simple (but working) level loading and saving. (No tilesets/layers/signs/npcs/links yet)
+* [Done] Basic UI working
+ * [Done] Tile Selection & Placing
+ * [Done] Copy/Paste/Cut
+ * [Done] Delete
+ * [Done] Undo/Redo
+ * [Done] Toolbar
 * [WIP] Fix crude bugs
-* [Working?] Ask for Graal folder to load images from there
-* [WIP] Add proper documentation on how to run it
+* [Done] Ask for Graal folder to load images from there
+* [Testing] Add proper documentation on how to run it
 * [WIP] First packaged release
 
 ### 0.1.1
