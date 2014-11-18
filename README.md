@@ -10,7 +10,7 @@ Running
 ### Run with source
 * Download source (e.g. as [ZIP](https://github.com/Inari-Whitebear/jsGConstruct/archive/master.zip))
 * Extract to a folder of your choice
-* Download [Atom-Shell](https://github.com/atom/atom-shell/releases)
+* Download [Atom-Shell](https://github.com/atom/atom-shell/releases) for your OS
 * Run atom-shell with the source-folder as commandline argument
 
 ### Run with release (as package)
